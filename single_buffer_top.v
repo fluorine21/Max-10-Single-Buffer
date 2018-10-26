@@ -41,16 +41,60 @@ wire sram_start;
 wire sram_rw;
 wire [15:0] sram_addr;
 
-
+//SRAM Controller
 sram_ctrl sram
 (
 	.clk(sys_clk),
 	.reset_n(reset),
 	.start_n(sram_start),
 	.rw(sram_rw),
-	.addr_in(sram_addr_in),
+	.addr_in(sram_controller_addr),
+	.data_write(sram_controller_data),
+	//outputs
+	.ready(sram_ready),
+	.data_read(sram_data_out),//Data from SRAM
+	.sram_addr(sram_addr),
+	.we_n(sram_we_n)
+	.oe_n(sram_oe_n),
+	.ce_a_n(sram_ce_a_n),
+	.ub_a_n(sram_ub_a_n), 
+	.lb_a_n(sram_lb_a_n),
+	//inout
+	.data_io(sram_data_io)
 );
 
+//MUX
+single_mux
+(
+	//Inputs from controllers
 
+	//A group
+	.start_a(pixel_start),
+	.rw_a(pixel_rw),
+	.addr_a(pixel_sram_addr),
+	.data_a(pixel_sram_data),
+	//B group
+	.start_b(reader_start),
+	.rw_b(reader_rw),
+	.addr_b(reader_addr),
+	.data_b(reader_data),
+
+	//Sram data and ready input
+	.sram_data_out(sram_data_out),//Data from SRAM
+	.sram_ready(sram_ready),
+
+	.select(mux_select),//0 = A, 1 = B
+
+	//Outputs to sram
+	.sram_start(sram_start),
+	.sram_rw(sram_rw),
+	.sram_addr(sram_controller_addr),
+	.sram_data(sram_controller_data),
+
+	//Outputs to A and B modules
+	.data_b(reader_data_in),
+	.ready_a(pixel_ready),
+	.ready_b(reader_ready)
+); 
 
 endmodule

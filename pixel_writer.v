@@ -141,6 +141,8 @@ always @ (negedge clk or negedge reset) begin
 				
 				state_end_write: begin
 					//if the memory is done and the pixel write went low
+					
+					//Move sram_ready wait
 					if(sram_ready && pixel_WE == 1'b0) begin 
 						//If the frame is done
 						if(sram_data == 16'hFFD9) begin
