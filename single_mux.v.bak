@@ -6,14 +6,14 @@ module single_mux
 
 //A group from pixel writer
 input wire start_a,
-input wire rw_a,
+input wire rw_a
 input wire [15:0] addr_a,
 input wire [15:0] data_a,
 //B group from pixel reader
 input wire start_b,
 input wire rw_b,
 input wire [15:0] addr_b,
-input wire [15:0] data_b,
+input wire [15:0] data_b,/
 
 //Sram data and ready input
 input wire [15:0] sram_data_out,//To data output of sram controller
@@ -28,7 +28,7 @@ output wire [15:0] sram_addr,
 output wire [15:0] sram_data,
 
 //Outputs to A and B modules
-output wire [15:0] data_out_b,
+output wire [15:0] data_b,
 output wire ready_a,
 output wire ready_b
 
@@ -43,7 +43,7 @@ assign sram_data = select ? data_b : data_a;
 
 //Assign for outputs to A and B modules
 
-assign data_out_b = select ? sram_data_out : 16'bz;
+assign data_b = select ? sram_data_out : 16'bz;
 assign ready_a = select ? 1'b0 : sram_ready;
 assign ready_b = select ? sram_ready : 1'b0;
 

@@ -1,1 +1,51 @@
 //Single Buffer Controller
+
+module single_ctrl
+(
+input wire clk,
+input wire reset,
+input wire pixel_vsync,//From pixel_reader module
+output wire select,//0 for read frame 1 for write
+);
+
+reg state;
+
+//State machine definitions
+localparam [1:0] = state_wait_pixel_end = 1'b0,//Wait for the pixel reader to tell us its done
+				   state_halt = 1'b1;//Wait until reset to take a new image
+
+always @ (posedge clk or negedge reset) begin
+	if(reset == 1'b0) begin
+		reset_regs();
+	end
+	else begin
+	
+		case(state)
+		
+		state_wait_pixel: begin
+			if(pixel_vsync)
+				state <= state_halt;
+			end
+		
+		end
+		
+		state_halt: begin
+			//Wait here until reset
+		end
+	
+	end
+
+
+end
+
+task reset_regs;
+begin
+
+state <= state_wait_pixel;
+
+end
+endtask
+
+assign select = state;//same encoding
+
+endmodule

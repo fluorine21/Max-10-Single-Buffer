@@ -3,10 +3,10 @@
 //Also packaged two pixels into one and writes them
 //Should write to half of the current addr (shifted over by 1)
 
-module pixel_reader
+module pixel_writer
 (
 input wire clk,
-input wire reset,//Active low, needs to be ORd with inverted select.
+input wire reset,//Active low, connected to system reset
 
 input wire [15:0] pixel_addr,//Incoming pixel write address
 input wire [7:0] pixel_data,//Incoming pixel data
@@ -15,17 +15,21 @@ input wire sram_ready,
 
 output reg [15:0] sram_addr,
 output reg [15:0] sram_data,
-output sram_we,
+output sram_rw,
 output reg sram_start,//
 output reg frame_end,//Pulses when time has come to switch to sending process
 output reg error,//Signals when something has gone wrong (we see VSYNC before FFD9)
 output reg pixel_capture_reset//Needed to reser the pixel capture module
+output reg [15:0] stop_addr,//Last address written to
 );
 
 `define PIXEL_ACTIVE 1'b0;
 
 reg [2:0] state;
 reg [1:0] global_state;
+
+//Holding the last data we wrote to check for a frame end
+reg [15:0] sram_data_prev;
 
 
 //Defining internal states
@@ -145,13 +149,18 @@ always @ (negedge clk or negedge reset) begin
 					//Move sram_ready wait
 					if(sram_ready && pixel_WE == 1'b0) begin 
 						//If the frame is done
-						if(sram_data == 16'hFFD9) begin
+						if(sram_data == 16'hFFD9 || sram_data[7:0] == 8'hD9 && sram_data_prev[15:8] == 8'hFF) begin
+							//Store the stop address
+							stop_addr <= sram_addr;
+							//Indicate that the frame has ended
 							frame_end <= 1'b1;
 							//Wait for the frame to end
 							global_state <= state_wait_frame;
 							state <= state_wait_first;
 						end
 						else begin
+						//Store the last word
+						sram_data_prev <= sram_data;
 						//Reset
 						state <= state_wait_first;
 						end
@@ -186,9 +195,12 @@ begin
 	
 	pixel_capture_reset <= 1'b0;//Keep pixel capture in reset if we are reset
 	
+	//Reset the previous data register
+	sram_data_prev <= 16'b0;
+	
 endtask
 
 
-assign sram_we = 1'b0; //0 for a write
+assign sram_rw = 1'b0; //0 for a write
 
 endmodule
