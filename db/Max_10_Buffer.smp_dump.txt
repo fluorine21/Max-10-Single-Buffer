@@ -1,0 +1,44 @@
+
+State Machine - |single_buffer_top|pixel_output:po|spi_controller:spi_ctrl|state
+Name state.send_second_byte state.wren_ack state.send_first_byte state.get_word state.cleanup 
+state.get_word 0 0 0 0 0 
+state.send_first_byte 0 0 1 1 0 
+state.wren_ack 0 1 0 1 0 
+state.send_second_byte 1 0 0 1 0 
+state.cleanup 0 0 0 1 1 
+
+State Machine - |single_buffer_top|pixel_output:po|spi_controller:spi_ctrl|global_state
+Name global_state.global_idle global_state.send_data global_state.send_size 
+global_state.global_idle 0 0 0 
+global_state.send_size 1 0 1 
+global_state.send_data 1 1 0 
+
+State Machine - |single_buffer_top|pixel_input:pi|pixel_writer:pw|global_state
+Name global_state.state_wait_frame_end global_state.state_frame_capture global_state.state_wait_frame 
+global_state.state_wait_frame_end 0 0 0 
+global_state.state_wait_frame 1 0 1 
+global_state.state_frame_capture 1 1 0 
+
+State Machine - |single_buffer_top|pixel_input:pi|pixel_writer:pw|state
+Name state.state_end_write state.state_wait_second state.state_wait_first_end state.state_wait_first 
+state.state_wait_first 0 0 0 0 
+state.state_wait_first_end 0 0 1 1 
+state.state_wait_second 0 1 0 1 
+state.state_end_write 1 0 0 1 
+
+State Machine - |single_buffer_top|pixel_input:pi|pixel_capture:pc|state
+Name state.state_wait 
+state.state_idle 0 
+state.state_wait 1 
+
+State Machine - |single_buffer_top|mux_and_sram:ms|sram_ctrl:sram|state_reg
+Name state_reg.state_idle state_reg.state_write state_reg.state_read 
+state_reg.state_idle 0 0 0 
+state_reg.state_read 1 0 1 
+state_reg.state_write 1 1 0 
+
+State Machine - |single_buffer_top|vsync_filter:vf|vsync_state
+Name vsync_state.state_first_wait vsync_state.state_second_wait vsync_state.state_switch 
+vsync_state.state_first_wait 0 0 0 
+vsync_state.state_switch 1 0 1 
+vsync_state.state_second_wait 1 1 0 

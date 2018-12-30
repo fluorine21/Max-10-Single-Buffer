@@ -51,7 +51,13 @@ refer to the applicable agreement for further details.
 		(text "select" (rect 133 27 155 39)(font "Arial" ))
 		(line (pt 176 32)(pt 160 32)(line_width 1))
 	)
+	(parameter
+		"VSYNC_ACTIVE"
+		"0"
+		""
+		(type "PARAMETER_SIGNED_DEC")	)
 	(drawing
 		(rectangle (rect 16 16 160 96)(line_width 1))
 	)
+	(annotation_block (parameter)(rect 192 -64 292 16))
 )

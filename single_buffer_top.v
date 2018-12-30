@@ -15,7 +15,7 @@ module single_buffer_top
 	output wire camera_xclk,
 	
 	//Memory Ins and Out
-	output wire [19:0] sram_addr,
+	output wire [15:0] sram_addr,
 	output wire sram_we_n,
 	output wire sram_oe_n,
 	output wire sram_ce_a_n,
@@ -29,135 +29,183 @@ module single_buffer_top
 	output wire spi_miso,
 	input wire spi_select,
 	output wire frame_ready,//1 when a frame can be read from memory
+	output wire error//1 when error has occured
 	
 );
 
-//Main clock from the system, derived from input clock
-wire sys_clk;
+//Uncomment if you want to use PLL for XCLK
+//`define USE_PLL
 
-//SRAM Controller// 
+localparam VSYNC_ACTIVE = 1'b0;
 
-//Internal signal definitions
-wire sram_start;
-wire sram_rw;
-wire [15:0] sram_addr;
+//PLL defs
+wire clk;
+assign clk = clk_in;
 
-///////////////////////
-///Memory Components///
-///////////////////////
-
-//SRAM Controller
-sram_ctrl sram
+//VSYNC filter
+wire internal_vsync;
+vsync_filter #(0, VSYNC_ACTIVE) vf
 (
-	.clk(sram_clk),//special 1/2 sysclock for sram
-	.reset_n(reset),
-	.start_n(sram_start),
-	.rw(sram_rw),
-	.addr_in(sram_controller_addr),
-	.data_write(sram_controller_data),
-	//outputs
-	.ready(sram_ready),
-	.data_read(sram_data_out),//Data from SRAM
-	.sram_addr(sram_addr),
-	.we_n(sram_we_n)
-	.oe_n(sram_oe_n),
-	.ce_a_n(sram_ce_a_n),
-	.ub_a_n(sram_ub_a_n), 
-	.lb_a_n(sram_lb_a_n),
-	//inout
-	.data_io(sram_data_io)
+	.clk(clk),
+	.reset(reset),
+	.vsync_in(camera_vsync),
+	.vsync_out(internal_vsync)
 );
 
-//MUX
-single_mux mux
-(
-	//Inputs from controllers
 
-	//A group
+//pll120_60 pll
+//(
+//	.areset(reset),
+//	.inclk0(clk_in),
+//	.c0(clk)
+//);
+
+
+//Buffer Controller
+
+wire mux_select;
+single_ctrl #(1) s_ctrl
+(
+	.clk(clk),
+	.reset(reset),
+	.pixel_vsync(frame_ready),//From pixel_writer module
+	.select(mux_select)//0 for read frame 1 for write
+);
+
+
+
+/////////////////////////
+/////Memory Components///
+/////////////////////////
+
+wire pixel_start;
+wire pixel_rw;
+wire [15:0] pixel_addr;
+wire [15:0] pixel_data;
+wire pixel_ready;
+
+wire spi_start;
+wire spi_rw;
+wire [15:0] spi_addr;
+wire [15:0] spi_data;
+wire spi_ready;
+
+wire [15:0] dummy_data;
+
+assign dummy_data = 16'b0;
+
+mux_and_sram ms
+(
+	//SRAM Controller Signals
+	.sram_clk(clk),//Needs to be half of sys_clk
+	.reset(reset),
+	
+	//MUX Input
+	.select(mux_select),
+	
 	.start_a(pixel_start),
 	.rw_a(pixel_rw),
-	.addr_a(pixel_sram_addr),
-	.data_a(pixel_sram_data),
-	//B group
-	.start_b(reader_start),
-	.rw_b(reader_rw),
-	.addr_b(reader_addr),
-	.data_b(reader_data),
-
-	//Sram data and ready input
-	.sram_data_out(sram_data_out),//Data from SRAM
-	.sram_ready(sram_ready),
-
-	.select(mux_select),//0 = A, 1 = B
-
-	//Outputs to sram
-	.sram_start(sram_start),
-	.sram_rw(sram_rw),
-	.sram_addr(sram_controller_addr),
-	.sram_data(sram_controller_data),
-
-	//Outputs to A and B modules
-	.data_b(reader_data_in),
+	.addr_a(pixel_addr),
+	.data_a(pixel_data),
+	
+	.start_b(spi_start),
+	.rw_b(spi_rw),
+	.addr_b(spi_addr),
+	.data_b(dummy_data),
+	
+	//MUX output
+	.data_out(spi_data),
 	.ready_a(pixel_ready),
-	.ready_b(reader_ready)
+	.ready_b(spi_ready),
+
+	//SRAM Signals
+	.sram_addr(sram_addr),
+	.sram_we_n(sram_we_n),
+	.sram_oe_n(sram_oe_n),
+	.sram_ce_a_n(sram_ce_a_n),
+	.sram_ub_a_n(sram_ub_a_n),
+	.sram_lb_a_n(sram_lb_a_n),
+	.sram_data_io(sram_data_io) 
 );
 
 
-/////////////////
-///Pixel Input///
-/////////////////
+///////////////////
+/////Pixel Input///
+///////////////////
 
-pixel_writer pw
+wire [15:0] stop_addr;
+
+pixel_input #(VSYNC_ACTIVE) pi
 (
-	.clk(sys_clk),
-	.reset,//Active low, needs to be ORd with inverted select.
-
-	.pixel_addr(pixel_addr),//Incoming pixel write address
-	.pixel_data(pixel_data),//Incoming pixel data
-	.pixel_WE(pixel_WE),//Pixel latch
-	.sram_ready(pixel_sram_ready),
-
-	.sram_addr(pixel_sram_addr),
-	.sram_data(pixel_sram_data),
-	.sram_rw(pixel_rw),
-	.sram_start(pixel_start),//
-	.frame_end(pixel_writer_vsync),//Pulses when time has come to switch to sending process
-	.error(),//Signals when something has gone wrong (we see VSYNC before FFD9)
-	.pixel_capture_reset(pixel_capture_reset),//Needed to reser the pixel capture module
-	.stop_addr()//Should be connected to SPI controller, does not reset with module reset
-);
-
-pixel_capture pc
-(
-.reset(reset),
-.clk(sys_clk),
-.pixel_clk(camera_pclk),
-.vsync(internal_vsync),//to internal vsync
-.hsync(camera_hsync),
-.data_in(camera_data),
-.addr_out(pixel_addr),
-.data_out(pixel_data),
-.WE(pixel_WE)
-);
-
-//////////////////
-///Pixel Output///
-//////////////////
-
-pixel_reader pr
-(
-	.clk(sys_clk),
+	//Clock and reset
+	.clk(clk),
 	.reset(reset),
-	.sram_ready(reader_ready),//Sram ready line
-	.read_addr(),//pixel to be read
-	.sram_data(read_sram_data),//Data from the sram
-	.RE(),//Read enable, it set to 1, triggers a read operation
-
-	.sram_addr(pixel_sram_addr),//Read address to sram
-	.data_out(),//Current pixel
-	.sram_rw(reader_rw),//1 for a read
-	.sram_start(reader_start),//0 is active
-	.ready() //Set to 1 when data is valid
+	
+	//Camera Ins and Outs
+	.camera_vsync(internal_vsync), //Should be connected to filtered VSYNC in top level design
+	.camera_hsync(camera_hsync),
+	.camera_pclk(camera_pclk),
+	.camera_data(camera_data),
+	
+	//Outputs to MUX
+	.sram_start(pixel_start),
+	.sram_rw(pixel_rw),
+	.sram_addr(pixel_addr),
+	.sram_data(pixel_data),
+	.sram_ready(pixel_ready),
+	
+	//Our outputs
+	.frame_end(frame_ready),//Goes high when FFD9 has been recieved
+	.error(error),
+	.stop_addr(stop_addr)
+	
 );
+
+////////////////////
+/////Pixel Output///
+////////////////////
+
+pixel_output po
+(
+	//Clocks and resets
+	.clk(clk),//Global clock, will be used to generate SPI clk
+	.reset(reset),
+
+	//MUX Signals
+	.sram_start(spi_start),
+	.sram_rw(spi_rw),
+	.sram_addr(spi_addr),
+	.sram_data(spi_data),
+	.sram_ready(spi_ready),
+	
+	//SPI Signals
+	.spi_clk(spi_clk),
+	.spi_mosi(spi_mosi),
+	.spi_miso(spi_miso),
+	.spi_select(spi_select),
+	
+	//Stop address from pixel input
+	.stop_addr(stop_addr)
+);
+
+
+`ifdef USE_PLL
+//XCLK generation
+pll120_30 pll
+(
+	.areset(reset),
+	.inclk0(clk_in),
+	.c0(camera_xclk)
+);
+`else
+divide_4 d4
+(
+	.clk_in(clk_in),
+	.reset(reset),
+	.clk_out(camera_xclk)
+);
+`endif
 
 endmodule
+
+

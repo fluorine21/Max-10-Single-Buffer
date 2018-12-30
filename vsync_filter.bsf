@@ -56,6 +56,11 @@ refer to the applicable agreement for further details.
 		"0"
 		""
 		(type "PARAMETER_SIGNED_DEC")	)
+	(parameter
+		"VSYNC_ACTIVE"
+		"0"
+		""
+		(type "PARAMETER_SIGNED_DEC")	)
 	(drawing
 		(rectangle (rect 16 16 168 96)(line_width 1))
 	)

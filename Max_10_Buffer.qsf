@@ -36,13 +36,14 @@
 # -------------------------------------------------------------------------- #
 
 
-set_global_assignment -name FAMILY "Cyclone IV E"
-set_global_assignment -name DEVICE auto
-set_global_assignment -name TOP_LEVEL_ENTITY Max_10_Buffer
+set_global_assignment -name FAMILY "MAX 10"
+set_global_assignment -name DEVICE 10M08SAE144C8G
+set_global_assignment -name TOP_LEVEL_ENTITY single_buffer_top
 set_global_assignment -name ORIGINAL_QUARTUS_VERSION 18.1.0
 set_global_assignment -name PROJECT_CREATION_TIME_DATE "21:24:40  OCTOBER 19, 2018"
 set_global_assignment -name LAST_QUARTUS_VERSION "18.1.0 Lite Edition"
 set_global_assignment -name PROJECT_OUTPUT_DIRECTORY output_files
+set_global_assignment -name VERILOG_FILE clock_dividers.v
 set_global_assignment -name VERILOG_FILE vsync_filter.v
 set_global_assignment -name VHDL_FILE spi_slave.vhd
 set_global_assignment -name VERILOG_FILE spi_controller.v
@@ -51,9 +52,218 @@ set_global_assignment -name VERILOG_FILE single_buffer_top.v
 set_global_assignment -name VERILOG_FILE pixel_capture.v
 set_global_assignment -name VERILOG_FILE single_controller.v
 set_global_assignment -name VERILOG_FILE pixel_writer.v
-set_global_assignment -name VERILOG_FILE pixel_reader.v
 set_global_assignment -name VERILOG_FILE sram_controller.v
+set_global_assignment -name QIP_FILE pll120_100.qip
+set_global_assignment -name SDC_FILE timing.sdc
+set_global_assignment -name CYCLONEII_OPTIMIZATION_TECHNIQUE SPEED
+set_global_assignment -name PHYSICAL_SYNTHESIS_COMBO_LOGIC ON
+set_global_assignment -name PHYSICAL_SYNTHESIS_REGISTER_DUPLICATION ON
+set_global_assignment -name PHYSICAL_SYNTHESIS_REGISTER_RETIMING ON
+set_global_assignment -name ROUTER_LCELL_INSERTION_AND_LOGIC_DUPLICATION ON
+set_global_assignment -name ROUTER_TIMING_OPTIMIZATION_LEVEL MAXIMUM
+set_global_assignment -name QII_AUTO_PACKED_REGISTERS NORMAL
+set_global_assignment -name SMART_RECOMPILE ON
+set_global_assignment -name ROUTER_CLOCKING_TOPOLOGY_ANALYSIS ON
+set_global_assignment -name FITTER_EFFORT "STANDARD FIT"
+set_global_assignment -name ADV_NETLIST_OPT_SYNTH_WYSIWYG_REMAP ON
+set_global_assignment -name MUX_RESTRUCTURE OFF
+set_global_assignment -name PHYSICAL_SYNTHESIS_ASYNCHRONOUS_SIGNAL_PIPELINING ON
+set_global_assignment -name QIP_FILE pll120_60.qip
+set_global_assignment -name MIN_CORE_JUNCTION_TEMP 0
+set_global_assignment -name MAX_CORE_JUNCTION_TEMP 85
+set_global_assignment -name VERILOG_FILE mux_and_sram.v
+set_global_assignment -name POWER_PRESET_COOLING_SOLUTION "23 MM HEAT SINK WITH 200 LFPM AIRFLOW"
+set_global_assignment -name POWER_BOARD_THERMAL_MODEL "NONE (CONSERVATIVE)"
+set_global_assignment -name TIMING_ANALYZER_MULTICORNER_ANALYSIS ON
+set_global_assignment -name FLOW_ENABLE_POWER_ANALYZER ON
+set_global_assignment -name POWER_DEFAULT_INPUT_IO_TOGGLE_RATE "12.5 %"
+set_global_assignment -name NUM_PARALLEL_PROCESSORS ALL
+set_global_assignment -name VERILOG_FILE pixel_input.v
+set_global_assignment -name VERILOG_FILE pixel_output.v
 set_global_assignment -name PARTITION_NETLIST_TYPE SOURCE -section_id Top
 set_global_assignment -name PARTITION_FITTER_PRESERVATION_LEVEL PLACEMENT_AND_ROUTING -section_id Top
 set_global_assignment -name PARTITION_COLOR 16764057 -section_id Top
+set_global_assignment -name FLOW_ENABLE_RTL_VIEWER ON
+set_global_assignment -name FLOW_ENABLE_IO_ASSIGNMENT_ANALYSIS ON
+set_global_assignment -name OPTIMIZATION_MODE "HIGH PERFORMANCE EFFORT"
+set_global_assignment -name TIMING_ANALYZER_DO_REPORT_TIMING ON
+set_location_assignment PIN_33 -to sram_ce_a_n
+set_location_assignment PIN_32 -to sram_addr[11]
+set_location_assignment PIN_29 -to sram_addr[12]
+set_location_assignment PIN_28 -to sram_addr[13]
+set_location_assignment PIN_27 -to sram_addr[14]
+set_location_assignment PIN_26 -to sram_addr[15]
+set_location_assignment PIN_130 -to reset
+set_location_assignment PIN_119 -to spi_clk
+set_location_assignment PIN_118 -to spi_mosi
+set_location_assignment PIN_111 -to spi_miso
+set_location_assignment PIN_110 -to spi_select
+set_location_assignment PIN_102 -to camera_hsync
+set_location_assignment PIN_101 -to camera_data[7]
+set_location_assignment PIN_100 -to camera_xclk
+set_location_assignment PIN_99 -to camera_data[6]
+set_location_assignment PIN_98 -to camera_data[5]
+set_location_assignment PIN_93 -to camera_data[4]
+set_location_assignment PIN_92 -to camera_data[0]
+set_location_assignment PIN_91 -to camera_data[3]
+set_location_assignment PIN_89 -to camera_data[2]
+set_location_assignment PIN_90 -to camera_data[1]
+set_location_assignment PIN_88 -to clk_in
+set_location_assignment PIN_25 -to error
+set_location_assignment PIN_127 -to frame_ready
+set_location_assignment PIN_87 -to sram_addr[7]
+set_location_assignment PIN_86 -to sram_addr[8]
+set_location_assignment PIN_85 -to sram_addr[9]
+set_location_assignment PIN_84 -to sram_addr[10]
+set_location_assignment PIN_81 -to sram_we_n
+set_location_assignment PIN_79 -to sram_data_io[7]
+set_location_assignment PIN_77 -to sram_data_io[6]
+set_location_assignment PIN_76 -to sram_data_io[5]
+set_location_assignment PIN_75 -to sram_data_io[4]
+set_location_assignment PIN_74 -to sram_addr[6]
+set_location_assignment PIN_70 -to sram_addr[5]
+set_location_assignment PIN_69 -to sram_addr[4]
+set_location_assignment PIN_65 -to sram_addr[3]
+set_location_assignment PIN_64 -to sram_data_io[8]
+set_location_assignment PIN_60 -to sram_data_io[9]
+set_location_assignment PIN_59 -to sram_data_io[10]
+set_location_assignment PIN_58 -to sram_data_io[11]
+set_location_assignment PIN_57 -to sram_data_io[12]
+set_location_assignment PIN_56 -to sram_data_io[13]
+set_location_assignment PIN_55 -to sram_data_io[14]
+set_location_assignment PIN_54 -to sram_data_io[15]
+set_location_assignment PIN_38 -to sram_data_io[0]
+set_location_assignment PIN_39 -to sram_data_io[1]
+set_location_assignment PIN_41 -to sram_data_io[2]
+set_location_assignment PIN_43 -to sram_data_io[3]
+set_location_assignment PIN_52 -to sram_lb_a_n
+set_location_assignment PIN_50 -to sram_ub_a_n
+set_location_assignment PIN_47 -to sram_oe_n
+set_location_assignment PIN_44 -to sram_addr[0]
+set_location_assignment PIN_45 -to sram_addr[1]
+set_location_assignment PIN_46 -to sram_addr[2]
+set_location_assignment PIN_96 -to camera_pclk
+set_location_assignment PIN_105 -to camera_vsync
+set_instance_assignment -name IO_STANDARD "3.3-V LVCMOS" -to reset
+set_instance_assignment -name IO_STANDARD "3.3-V LVCMOS" -to camera_vsync
+set_instance_assignment -name IO_STANDARD "3.3-V LVCMOS" -to error
+set_instance_assignment -name IO_STANDARD "3.3-V LVCMOS" -to sram_addr[15]
+set_instance_assignment -name IO_STANDARD "3.3-V LVCMOS" -to sram_addr[14]
+set_instance_assignment -name IO_STANDARD "3.3-V LVCMOS" -to sram_addr[13]
+set_instance_assignment -name IO_STANDARD "3.3-V LVCMOS" -to sram_addr[12]
+set_instance_assignment -name IO_STANDARD "3.3-V LVCMOS" -to sram_addr[11]
+set_instance_assignment -name IO_STANDARD "3.3-V LVCMOS" -to sram_ce_a_n
+set_instance_assignment -name IO_STANDARD "3.3-V LVCMOS" -to sram_data_io[0]
+set_instance_assignment -name IO_STANDARD "3.3-V LVCMOS" -to sram_data_io[1]
+set_instance_assignment -name IO_STANDARD "3.3-V LVCMOS" -to sram_data_io[2]
+set_instance_assignment -name IO_STANDARD "3.3-V LVCMOS" -to sram_data_io[3]
+set_instance_assignment -name IO_STANDARD "3.3-V LVCMOS" -to sram_addr[0]
+set_instance_assignment -name IO_STANDARD "3.3-V LVCMOS" -to sram_addr[1]
+set_instance_assignment -name IO_STANDARD "3.3-V LVCMOS" -to sram_addr[2]
+set_instance_assignment -name IO_STANDARD "3.3-V LVCMOS" -to sram_oe_n
+set_instance_assignment -name IO_STANDARD "3.3-V LVCMOS" -to sram_ub_a_n
+set_instance_assignment -name IO_STANDARD "3.3-V LVCMOS" -to sram_lb_a_n
+set_instance_assignment -name IO_STANDARD "3.3-V LVCMOS" -to sram_data_io[15]
+set_instance_assignment -name IO_STANDARD "3.3-V LVCMOS" -to sram_data_io[14]
+set_instance_assignment -name IO_STANDARD "3.3-V LVCMOS" -to sram_data_io[13]
+set_instance_assignment -name IO_STANDARD "3.3-V LVCMOS" -to sram_data_io[12]
+set_instance_assignment -name IO_STANDARD "3.3-V LVCMOS" -to sram_data_io[11]
+set_instance_assignment -name IO_STANDARD "3.3-V LVCMOS" -to sram_data_io[10]
+set_instance_assignment -name IO_STANDARD "3.3-V LVCMOS" -to sram_data_io[9]
+set_instance_assignment -name IO_STANDARD "3.3-V LVCMOS" -to sram_data_io[8]
+set_instance_assignment -name IO_STANDARD "3.3-V LVCMOS" -to sram_addr[3]
+set_instance_assignment -name IO_STANDARD "3.3-V LVCMOS" -to sram_addr[4]
+set_instance_assignment -name IO_STANDARD "3.3-V LVCMOS" -to sram_addr[5]
+set_instance_assignment -name IO_STANDARD "3.3-V LVCMOS" -to sram_addr[6]
+set_instance_assignment -name IO_STANDARD "3.3-V LVCMOS" -to sram_data_io[4]
+set_instance_assignment -name IO_STANDARD "3.3-V LVCMOS" -to sram_data_io[5]
+set_instance_assignment -name IO_STANDARD "3.3-V LVCMOS" -to sram_data_io[6]
+set_instance_assignment -name IO_STANDARD "3.3-V LVCMOS" -to sram_data_io[7]
+set_instance_assignment -name IO_STANDARD "3.3-V LVCMOS" -to sram_we_n
+set_instance_assignment -name IO_STANDARD "3.3-V LVCMOS" -to sram_addr[10]
+set_instance_assignment -name IO_STANDARD "3.3-V LVCMOS" -to sram_addr[9]
+set_instance_assignment -name IO_STANDARD "3.3-V LVCMOS" -to sram_addr[8]
+set_instance_assignment -name IO_STANDARD "3.3-V LVCMOS" -to sram_addr[7]
+set_instance_assignment -name IO_STANDARD "3.3-V LVCMOS" -to clk_in
+set_instance_assignment -name IO_STANDARD "3.3-V LVCMOS" -to camera_data[2]
+set_instance_assignment -name IO_STANDARD "3.3-V LVCMOS" -to camera_data[1]
+set_instance_assignment -name IO_STANDARD "3.3-V LVCMOS" -to camera_data[3]
+set_instance_assignment -name IO_STANDARD "3.3-V LVCMOS" -to camera_data[0]
+set_instance_assignment -name IO_STANDARD "3.3-V LVCMOS" -to camera_data[4]
+set_instance_assignment -name IO_STANDARD "3.3-V LVCMOS" -to camera_pclk
+set_instance_assignment -name IO_STANDARD "3.3-V LVCMOS" -to camera_data[5]
+set_instance_assignment -name IO_STANDARD "3.3-V LVCMOS" -to camera_data[6]
+set_instance_assignment -name IO_STANDARD "3.3-V LVCMOS" -to camera_xclk
+set_instance_assignment -name IO_STANDARD "3.3-V LVCMOS" -to camera_data[7]
+set_instance_assignment -name IO_STANDARD "3.3-V LVCMOS" -to camera_hsync
+set_instance_assignment -name IO_STANDARD "3.3-V LVCMOS" -to spi_select
+set_instance_assignment -name IO_STANDARD "3.3-V LVCMOS" -to spi_miso
+set_instance_assignment -name IO_STANDARD "3.3-V LVCMOS" -to spi_mosi
+set_instance_assignment -name IO_STANDARD "3.3-V LVCMOS" -to spi_clk
+set_instance_assignment -name IO_STANDARD "3.3-V LVCMOS" -to frame_ready
+set_global_assignment -name STATE_MACHINE_PROCESSING "ONE-HOT"
+set_global_assignment -name QIP_FILE pll120_30.qip
+set_instance_assignment -name CURRENT_STRENGTH_NEW 2MA -to camera_data[3]
+set_instance_assignment -name CURRENT_STRENGTH_NEW 2MA -to camera_data[4]
+set_instance_assignment -name CURRENT_STRENGTH_NEW 2MA -to camera_data[2]
+set_instance_assignment -name CURRENT_STRENGTH_NEW 2MA -to camera_data[1]
+set_instance_assignment -name CURRENT_STRENGTH_NEW 2MA -to camera_data[0]
+set_instance_assignment -name CURRENT_STRENGTH_NEW 2MA -to camera_hsync
+set_instance_assignment -name CURRENT_STRENGTH_NEW 2MA -to camera_pclk
+set_instance_assignment -name CURRENT_STRENGTH_NEW 2MA -to camera_vsync
+set_instance_assignment -name CURRENT_STRENGTH_NEW 2MA -to camera_xclk
+set_instance_assignment -name CURRENT_STRENGTH_NEW 2MA -to clk_in
+set_instance_assignment -name CURRENT_STRENGTH_NEW 2MA -to error
+set_instance_assignment -name CURRENT_STRENGTH_NEW 2MA -to frame_ready
+set_instance_assignment -name CURRENT_STRENGTH_NEW 2MA -to reset
+set_instance_assignment -name CURRENT_STRENGTH_NEW 2MA -to spi_clk
+set_instance_assignment -name CURRENT_STRENGTH_NEW 2MA -to spi_miso
+set_instance_assignment -name CURRENT_STRENGTH_NEW 2MA -to spi_mosi
+set_instance_assignment -name CURRENT_STRENGTH_NEW 2MA -to spi_select
+set_instance_assignment -name CURRENT_STRENGTH_NEW 2MA -to camera_data[5]
+set_instance_assignment -name CURRENT_STRENGTH_NEW 2MA -to camera_data[6]
+set_instance_assignment -name CURRENT_STRENGTH_NEW 2MA -to camera_data[7]
+set_instance_assignment -name CURRENT_STRENGTH_NEW 2MA -to camera_data
+set_instance_assignment -name CURRENT_STRENGTH_NEW 2MA -to sram_addr[15]
+set_instance_assignment -name CURRENT_STRENGTH_NEW 2MA -to sram_addr[14]
+set_instance_assignment -name CURRENT_STRENGTH_NEW 2MA -to sram_we_n
+set_instance_assignment -name CURRENT_STRENGTH_NEW 2MA -to sram_ub_a_n
+set_instance_assignment -name CURRENT_STRENGTH_NEW 2MA -to sram_oe_n
+set_instance_assignment -name CURRENT_STRENGTH_NEW 2MA -to sram_lb_a_n
+set_instance_assignment -name CURRENT_STRENGTH_NEW 2MA -to sram_data_io[0]
+set_instance_assignment -name CURRENT_STRENGTH_NEW 2MA -to sram_data_io[1]
+set_instance_assignment -name CURRENT_STRENGTH_NEW 2MA -to sram_data_io[2]
+set_instance_assignment -name CURRENT_STRENGTH_NEW 2MA -to sram_data_io[3]
+set_instance_assignment -name CURRENT_STRENGTH_NEW 2MA -to sram_data_io[4]
+set_instance_assignment -name CURRENT_STRENGTH_NEW 2MA -to sram_data_io[5]
+set_instance_assignment -name CURRENT_STRENGTH_NEW 2MA -to sram_data_io[6]
+set_instance_assignment -name CURRENT_STRENGTH_NEW 2MA -to sram_data_io[7]
+set_instance_assignment -name CURRENT_STRENGTH_NEW 2MA -to sram_data_io[8]
+set_instance_assignment -name CURRENT_STRENGTH_NEW 2MA -to sram_data_io[9]
+set_instance_assignment -name CURRENT_STRENGTH_NEW 2MA -to sram_data_io[10]
+set_instance_assignment -name CURRENT_STRENGTH_NEW 2MA -to sram_data_io[11]
+set_instance_assignment -name CURRENT_STRENGTH_NEW 2MA -to sram_data_io[12]
+set_instance_assignment -name CURRENT_STRENGTH_NEW 2MA -to sram_data_io[13]
+set_instance_assignment -name CURRENT_STRENGTH_NEW 2MA -to sram_data_io[14]
+set_instance_assignment -name CURRENT_STRENGTH_NEW 2MA -to sram_data_io[15]
+set_instance_assignment -name CURRENT_STRENGTH_NEW 2MA -to sram_data_io
+set_instance_assignment -name CURRENT_STRENGTH_NEW 2MA -to sram_ce_a_n
+set_instance_assignment -name CURRENT_STRENGTH_NEW 2MA -to sram_addr[0]
+set_instance_assignment -name CURRENT_STRENGTH_NEW 2MA -to sram_addr[1]
+set_instance_assignment -name CURRENT_STRENGTH_NEW 2MA -to sram_addr[2]
+set_instance_assignment -name CURRENT_STRENGTH_NEW 2MA -to sram_addr[3]
+set_instance_assignment -name CURRENT_STRENGTH_NEW 2MA -to sram_addr[4]
+set_instance_assignment -name CURRENT_STRENGTH_NEW 2MA -to sram_addr[5]
+set_instance_assignment -name CURRENT_STRENGTH_NEW 2MA -to sram_addr[6]
+set_instance_assignment -name CURRENT_STRENGTH_NEW 2MA -to sram_addr[7]
+set_instance_assignment -name CURRENT_STRENGTH_NEW 2MA -to sram_addr[8]
+set_instance_assignment -name CURRENT_STRENGTH_NEW 2MA -to sram_addr[9]
+set_instance_assignment -name CURRENT_STRENGTH_NEW 2MA -to sram_addr[10]
+set_instance_assignment -name CURRENT_STRENGTH_NEW 2MA -to sram_addr[11]
+set_instance_assignment -name CURRENT_STRENGTH_NEW 2MA -to sram_addr[12]
+set_instance_assignment -name CURRENT_STRENGTH_NEW 2MA -to sram_addr[13]
+set_instance_assignment -name CURRENT_STRENGTH_NEW 2MA -to sram_addr
+set_global_assignment -name VERILOG_FILE pixel_input_tb.v
+set_global_assignment -name VERILOG_FILE mux_and_sram_tb.v
+set_global_assignment -name VERILOG_FILE pixel_output_tb.v
 set_instance_assignment -name PARTITION_HIERARCHY root_partition -to | -section_id Top

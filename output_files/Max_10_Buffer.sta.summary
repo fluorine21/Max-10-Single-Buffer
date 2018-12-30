@@ -1,0 +1,101 @@
+------------------------------------------------------------
+Timing Analyzer Summary
+------------------------------------------------------------
+
+Type  : Slow 1200mV 85C Model Setup 'clk_in'
+Slack : 0.659
+TNS   : 0.000
+
+Type  : Slow 1200mV 85C Model Setup 'spi_clk'
+Slack : 5.359
+TNS   : 0.000
+
+Type  : Slow 1200mV 85C Model Hold 'clk_in'
+Slack : 0.360
+TNS   : 0.000
+
+Type  : Slow 1200mV 85C Model Hold 'spi_clk'
+Slack : 0.394
+TNS   : 0.000
+
+Type  : Slow 1200mV 85C Model Recovery 'clk_in'
+Slack : 1.475
+TNS   : 0.000
+
+Type  : Slow 1200mV 85C Model Removal 'clk_in'
+Slack : 2.235
+TNS   : 0.000
+
+Type  : Slow 1200mV 85C Model Minimum Pulse Width 'clk_in'
+Slack : 3.871
+TNS   : 0.000
+
+Type  : Slow 1200mV 85C Model Minimum Pulse Width 'spi_clk'
+Slack : 24.768
+TNS   : 0.000
+
+Type  : Slow 1200mV 0C Model Setup 'clk_in'
+Slack : 0.782
+TNS   : 0.000
+
+Type  : Slow 1200mV 0C Model Setup 'spi_clk'
+Slack : 5.583
+TNS   : 0.000
+
+Type  : Slow 1200mV 0C Model Hold 'clk_in'
+Slack : 0.322
+TNS   : 0.000
+
+Type  : Slow 1200mV 0C Model Hold 'spi_clk'
+Slack : 0.352
+TNS   : 0.000
+
+Type  : Slow 1200mV 0C Model Recovery 'clk_in'
+Slack : 1.658
+TNS   : 0.000
+
+Type  : Slow 1200mV 0C Model Removal 'clk_in'
+Slack : 2.031
+TNS   : 0.000
+
+Type  : Slow 1200mV 0C Model Minimum Pulse Width 'clk_in'
+Slack : 3.900
+TNS   : 0.000
+
+Type  : Slow 1200mV 0C Model Minimum Pulse Width 'spi_clk'
+Slack : 24.660
+TNS   : 0.000
+
+Type  : Fast 1200mV 0C Model Setup 'clk_in'
+Slack : 2.346
+TNS   : 0.000
+
+Type  : Fast 1200mV 0C Model Setup 'spi_clk'
+Slack : 6.872
+TNS   : 0.000
+
+Type  : Fast 1200mV 0C Model Hold 'clk_in'
+Slack : 0.150
+TNS   : 0.000
+
+Type  : Fast 1200mV 0C Model Hold 'spi_clk'
+Slack : 0.166
+TNS   : 0.000
+
+Type  : Fast 1200mV 0C Model Recovery 'clk_in'
+Slack : 2.621
+TNS   : 0.000
+
+Type  : Fast 1200mV 0C Model Removal 'clk_in'
+Slack : 0.885
+TNS   : 0.000
+
+Type  : Fast 1200mV 0C Model Minimum Pulse Width 'clk_in'
+Slack : 3.478
+TNS   : 0.000
+
+Type  : Fast 1200mV 0C Model Minimum Pulse Width 'spi_clk'
+Slack : 24.255
+TNS   : 0.000
+
+------------------------------------------------------------

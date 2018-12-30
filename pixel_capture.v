@@ -1,33 +1,39 @@
 //Pixel Capture Module
 
-module pixel_capture(
+module pixel_capture
+#(
+parameter VSYNC_ACTIVE = 0
+)
+(
 input wire reset,
 input wire clk,
 input wire pixel_clk,
 input wire vsync,//to internal vsync
 input wire hsync,
 input [7:0] data_in,
-output reg [15:0] addr_out,
+output reg [16:0] addr_out,
 output reg [7:0] data_out,
 output reg WE
 );
 
+reg [1:0] state;
+localparam [1:0] state_idle = 2'b00,
+					  state_wait = 2'b01;
+
 initial begin
 
-	addr_out <= 16'b0;
+	addr_out <= 17'b0;
 	data_out <= 8'b0;
 	state <= state_idle;
 	WE <= 1'b0;
 end
 
-reg [1:0] state;
 
-localparam [1:0] state_idle = 2'b00,
-					  state_wait = 2'b01;
+
 
 always @ (posedge clk or negedge reset or negedge vsync) begin
-	if(reset == 1'b0 || vsync == 1'b0) begin
-		addr_out <= 16'b0;
+	if(reset == 1'b0 || vsync == VSYNC_ACTIVE) begin
+		addr_out <= 17'b0;
 		data_out <= 8'b0;
 		state <= state_idle;
 		WE <= 1'b0;

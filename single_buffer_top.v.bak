@@ -1,0 +1,276 @@
+//Top Level module
+
+
+module single_buffer_top
+(
+	//Global clock and reset inputs
+	input wire clk_in,
+	input wire reset,//Also used to cause a frame capture
+	
+	//Camera Ins and Outs
+	input wire camera_vsync,
+	input wire camera_hsync,
+	input wire camera_pclk,
+	input wire [7:0] camera_data,
+	output wire camera_xclk,
+	
+	//Memory Ins and Out
+	output wire [19:0] sram_addr,
+	output wire sram_we_n,
+	output wire sram_oe_n,
+	output wire sram_ce_a_n,
+	output wire sram_ub_a_n,
+	output wire sram_lb_a_n,
+	inout wire [15:0] sram_data_io,
+	
+	//Microcontroller Ins and Outs
+	input wire spi_clk,
+	input wire spi_mosi,
+	output wire spi_miso,
+	input wire spi_select,
+	output wire frame_ready,//1 when a frame can be read from memory
+	
+);
+
+//Main clock from the system, derived from input clock
+wire sys_clk;
+
+//SRAM Controller// 
+
+//Internal signal definitions
+wire sram_start;
+wire sram_rw;
+wire [15:0] sram_addr;
+wire sram_clk;
+wire sram_start;
+wire sram_rw;
+wire [15:0] sram_controller_addr;
+wire [15:0] sram_controller_data;
+wire sram_ready;
+wire [15:0] sram_data_out;
+
+///////////////////////
+///Memory Components///
+///////////////////////
+
+//SRAM Controller
+sram_ctrl sram
+(
+	.clk(sram_clk),//special 1/2 sysclock for sram
+	.reset_n(reset),
+	.start_n(sram_start),
+	.rw(sram_rw),
+	.addr_in(sram_controller_addr),
+	.data_write(sram_controller_data),
+	//outputs
+	.ready(sram_ready),
+	.data_read(sram_data_out),//Data from SRAM
+	.sram_addr(sram_addr),
+	.we_n(sram_we_n)
+	.oe_n(sram_oe_n),
+	.ce_a_n(sram_ce_a_n),
+	.ub_a_n(sram_ub_a_n), 
+	.lb_a_n(sram_lb_a_n),
+	//inout
+	.data_io(sram_data_io)
+);
+
+wire pixel_start;
+wire pixel_rw;
+wire [15:0] pixel_sram_addr;
+wire [15:0] pixel_sram_data;
+wire spu_start;
+wire spi_rw;
+wire [15:0] spi_addr;
+wire [15:0] spi_data;
+wire [15:0] spi_data_in;
+wire pixel_ready;
+wire spi_ready;
+wire mux_select;
+
+//MUX
+single_mux mux
+(
+	//Inputs from controllers
+
+	//A group
+	.start_a(pixel_start),
+	.rw_a(pixel_rw),
+	.addr_a(pixel_sram_addr),
+	.data_a(pixel_sram_data),
+	//B group
+	.start_b(spi_start),
+	.rw_b(spi_rw),
+	.addr_b(spi_addr),
+	.data_b(spi_data),
+
+	//Sram data and ready input
+	.sram_data_out(sram_data_out),//Data from SRAM
+	.sram_ready(sram_ready),
+
+	.select(mux_select),//0 = A, 1 = B
+
+	//Outputs to sram
+	.sram_start(sram_start),
+	.sram_rw(sram_rw),
+	.sram_addr(sram_controller_addr),
+	.sram_data(sram_controller_data),
+
+	//Outputs to A and B modules
+	.data_b(spi_data_in),
+	.ready_a(pixel_ready),
+	.ready_b(spi_ready)
+);
+
+
+/////////////////
+///Pixel Input///
+/////////////////
+
+wire [15:0] pixel_addr;
+wire [7:0] pixel_data;
+wire pixel_WE;
+wire pixel_writer_vsync;
+wire pixel_capture_reset;
+wire [15:0] stop_addr;
+wire internal_vsync;
+
+pixel_writer pw
+(
+	.clk(sys_clk),
+	.reset(reset),//Active low, needs to be ORd with inverted select.
+
+	.pixel_addr(pixel_addr),//Incoming pixel write address
+	.pixel_data(pixel_data),//Incoming pixel data
+	.pixel_WE(pixel_WE),//Pixel latch
+	.sram_ready(pixel_ready),
+	.pixel_vsync(internal_vsync),
+
+	.sram_addr(pixel_sram_addr),
+	.sram_data(pixel_sram_data),
+	.sram_rw(pixel_rw),
+	.sram_start(pixel_start),//
+	.frame_end(pixel_writer_vsync),//Pulses when time has come to switch to sending process
+	.error(),//Signals when something has gone wrong (we see VSYNC before FFD9)
+	.pixel_capture_reset(pixel_capture_reset),//Needed to reset the pixel capture module
+	.stop_addr(stop_addr)//Should be connected to SPI controller, does not reset with module reset
+);
+
+pixel_capture pc
+(
+	.reset(pixel_capture_reset),
+	.clk(sys_clk),
+	.pixel_clk(camera_pclk),
+	.vsync(internal_vsync),//to internal vsync
+	.hsync(camera_hsync),
+	.data_in(camera_data),
+	.addr_out(pixel_addr),
+	.data_out(pixel_data),
+	.WE(pixel_WE)
+);
+
+//////////////////
+///Pixel Output///
+//////////////////
+
+wire do_valid;
+wire di_req;
+wire wr_ack;
+wire [7:0] data_from_spi;
+wire [7:0] data_to_spi;
+wire wren;
+
+spi_controller spi_ctrl
+(
+	.clk(sys_clk),
+	.reset(reset),
+	
+	//SRAM
+	.sram_ready(spi_ready), //Ready signal from pixel reader_ready
+	.stop_addr(stop_addr),//Last address from pixel writer
+	.sram_addr(spi_addr),
+	.sram_data(spi_data_in),//Data from reader is valid
+
+	.sram_start(spi_start),
+	
+	//SPI inputs
+	.do_valid(do_valid),
+	.di_req(di_req),
+	.wr_ack(wr_ack),
+	.spi_data_in(data_from_spi),
+	
+	//Outputs
+	.spi_data_out(data_to_spi),//To SPI controller
+	.wren(wren)//to spi controller
+	
+);
+
+wire int_spi_clk;
+
+spi_slave spi_sl
+(
+	//Might be clocked at a different speed
+	.clk_i(int_spi_clk), //internal interface clock (clocks di/do registers)
+	.spi_ssel_i(spi_select), //spi bus slave select line
+	.spi_sck_i(spi_clk),  //spi bus sck clock (clocks the shift register core)
+	.spi_mosi_i(spi_mosi), //spi bus mosi input
+	.spi_miso_o(spi_miso), //spi bus spi_miso_o output
+	.di_req_o(di_req),   //preload lookahead data request line
+	.di_i(data_to_spi), //parallel load data in (clocked in on rising edge of clk_i)
+	.wren_i(wren), //user data write enable
+	.wr_ack_o(wr_ack), //write acknowledge
+	.do_valid_o(do_valid), //do_o data valid strobe, valid during one clk_i rising edge.
+	.do_o(data_from_spi) //parallel output (clocked out on falling clk_i)
+);
+
+///////////////////////
+///Buffer Controller///
+///////////////////////
+
+single_ctrl s_ctrl
+(
+	.clk(sys_clk),
+	.reset(reset),
+	.pixel_vsync(pixel_writer_vsync),//From pixel_writer module
+	.select(mux_select)//0 for read frame 1 for write
+);
+
+
+//////////////////////////////////////////
+///CLock Dividers, PLL and VSYNC Filter///
+//////////////////////////////////////////
+
+//Need a sys_clk of 100MHz, SPI and SRAM clock of 50MHz
+
+
+//50MHz clock generation
+
+wire MHz_50;
+
+divide_2 d2
+(
+.clk_in(sys_clk),
+.reset(reset),
+.clk_out(MHz_50)
+);
+
+//Clock assigns
+assign sram_clk = MHz_50;
+assign spi_clk = MHz_50;
+
+//PLL Instantiation
+
+
+
+//VSYNC filter
+
+vsync_filter vf
+(
+	.clk(sys_clk),
+	.reset(reset),
+	.vsync_in(camera_vsync),
+	.vsync_out(internal_vsync)
+);
+
+
+endmodule

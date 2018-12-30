@@ -1,0 +1,4 @@
+Warning (10268): Verilog HDL information at clock_dividers.v(45): always construct contains both blocking and non-blocking assignments File: C:/Users/James Williams/Google Drive/Northwestern/Research - Mikhelson/Projects/Max 10 Buffer/clock_dividers.v Line: 45
+Warning (10268): Verilog HDL information at pixel_writer.v(58): always construct contains both blocking and non-blocking assignments File: C:/Users/James Williams/Google Drive/Northwestern/Research - Mikhelson/Projects/Max 10 Buffer/pixel_writer.v Line: 58
+Warning (10273): Verilog HDL warning at sram_controller.v(137): extended using "x" or "z" File: C:/Users/James Williams/Google Drive/Northwestern/Research - Mikhelson/Projects/Max 10 Buffer/sram_controller.v Line: 137
+Warning (10273): Verilog HDL warning at mux_and_sram_tb.v(35): extended using "x" or "z" File: C:/Users/James Williams/Google Drive/Northwestern/Research - Mikhelson/Projects/Max 10 Buffer/mux_and_sram_tb.v Line: 35

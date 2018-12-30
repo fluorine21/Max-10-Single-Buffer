@@ -3,7 +3,8 @@
 
 module vsync_filter
 #(
-	parameter wait_cycles = 0
+	parameter wait_cycles = 0,
+	parameter VSYNC_ACTIVE = 0
 )
 (
 	input wire clk,
@@ -11,7 +12,6 @@ module vsync_filter
 	input wire vsync_in,
 	output reg vsync_out
 );
-
 
 reg [1:0] vsync_state;
 reg [1:0] vsync_count;
@@ -36,7 +36,7 @@ always @ (posedge clk or negedge reset) begin
 			
 			state_first_wait: begin
 				//If the capture trigger is active
-				if(vsync_in) begin
+				if(vsync_in == VSYNC_ACTIVE) begin
 					if(vsync_count >= wait_cycles) begin
 						vsync_count <= 0;
 						vsync_state <= state_switch;
@@ -54,15 +54,15 @@ always @ (posedge clk or negedge reset) begin
 		
 			state_switch: begin
 				//Perform the buffer switch
-				vsync_out <= 1'b1;
+				vsync_out <= VSYNC_ACTIVE;
 				//Wait for the frame to start
 				vsync_state <= state_second_wait;
 			end
 			
 			state_second_wait: begin
 			//Once vsync deactivates
-				if(!vsync_in) begin
-					vsync_out <= 1'b0;
+				if(vsync_in != VSYNC_ACTIVE) begin
+					vsync_out <= !VSYNC_ACTIVE;
 					vsync_state <= state_first_wait;
 				end
 			end

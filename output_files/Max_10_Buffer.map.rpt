@@ -1,0 +1,693 @@
+Analysis & Synthesis report for Max_10_Buffer
+Sat Dec 29 13:32:13 2018
+Quartus Prime Version 18.1.0 Build 625 09/12/2018 SJ Lite Edition
+
+
+---------------------
+; Table of Contents ;
+---------------------
+  1. Legal Notice
+  2. Analysis & Synthesis Summary
+  3. Analysis & Synthesis Settings
+  4. Parallel Compilation
+  5. Analysis & Synthesis Source Files Read
+  6. Analysis & Synthesis Resource Usage Summary
+  7. Analysis & Synthesis Resource Utilization by Entity
+  8. State Machine - |single_buffer_top|pixel_output:po|spi_controller:spi_ctrl|state
+  9. State Machine - |single_buffer_top|pixel_output:po|spi_controller:spi_ctrl|global_state
+ 10. State Machine - |single_buffer_top|pixel_input:pi|pixel_writer:pw|global_state
+ 11. State Machine - |single_buffer_top|pixel_input:pi|pixel_writer:pw|state
+ 12. State Machine - |single_buffer_top|pixel_input:pi|pixel_capture:pc|state
+ 13. State Machine - |single_buffer_top|mux_and_sram:ms|sram_ctrl:sram|state_reg
+ 14. State Machine - |single_buffer_top|vsync_filter:vf|vsync_state
+ 15. Registers Removed During Synthesis
+ 16. Removed Registers Triggering Further Register Optimizations
+ 17. General Register Statistics
+ 18. Inverted Register Statistics
+ 19. Physical Synthesis Netlist Optimizations
+ 20. Multiplexer Restructuring Statistics (No Restructuring Performed)
+ 21. Parameter Settings for User Entity Instance: vsync_filter:vf
+ 22. Parameter Settings for User Entity Instance: single_ctrl:s_ctrl
+ 23. Parameter Settings for User Entity Instance: pixel_input:pi
+ 24. Parameter Settings for User Entity Instance: pixel_input:pi|pixel_capture:pc
+ 25. Parameter Settings for User Entity Instance: pixel_input:pi|pixel_writer:pw
+ 26. Parameter Settings for User Entity Instance: pixel_output:po|spi_slave:spi_sl
+ 27. Port Connectivity Checks: "pixel_output:po|spi_slave:spi_sl"
+ 28. Port Connectivity Checks: "mux_and_sram:ms"
+ 29. Post-Synthesis Netlist Statistics for Top Partition
+ 30. Elapsed Time Per Partition
+ 31. Analysis & Synthesis Messages
+ 32. Analysis & Synthesis Suppressed Messages
+
+
+
+----------------
+; Legal Notice ;
+----------------
+Copyright (C) 2018  Intel Corporation. All rights reserved.
+Your use of Intel Corporation's design tools, logic functions 
+and other software and tools, and its AMPP partner logic 
+functions, and any output files from any of the foregoing 
+(including device programming or simulation files), and any 
+associated documentation or information are expressly subject 
+to the terms and conditions of the Intel Program License 
+Subscription Agreement, the Intel Quartus Prime License Agreement,
+the Intel FPGA IP License Agreement, or other applicable license
+agreement, including, without limitation, that your use is for
+the sole purpose of programming logic devices manufactured by
+Intel and sold by Intel or its authorized distributors.  Please
+refer to the applicable agreement for further details.
+
+
+
++----------------------------------------------------------------------------------+
+; Analysis & Synthesis Summary                                                     ;
++------------------------------------+---------------------------------------------+
+; Analysis & Synthesis Status        ; Successful - Sat Dec 29 13:32:13 2018       ;
+; Quartus Prime Version              ; 18.1.0 Build 625 09/12/2018 SJ Lite Edition ;
+; Revision Name                      ; Max_10_Buffer                               ;
+; Top-level Entity Name              ; single_buffer_top                           ;
+; Family                             ; MAX 10                                      ;
+; Total logic elements               ; 364                                         ;
+;     Total combinational functions  ; 247                                         ;
+;     Dedicated logic registers      ; 242                                         ;
+; Total registers                    ; 242                                         ;
+; Total pins                         ; 57                                          ;
+; Total virtual pins                 ; 0                                           ;
+; Total memory bits                  ; 0                                           ;
+; Embedded Multiplier 9-bit elements ; 0                                           ;
+; Total PLLs                         ; 0                                           ;
+; UFM blocks                         ; 0                                           ;
+; ADC blocks                         ; 0                                           ;
++------------------------------------+---------------------------------------------+
+
+
++------------------------------------------------------------------------------------------------------------+
+; Analysis & Synthesis Settings                                                                              ;
++------------------------------------------------------------------+--------------------+--------------------+
+; Option                                                           ; Setting            ; Default Value      ;
++------------------------------------------------------------------+--------------------+--------------------+
+; Device                                                           ; 10M08SAE144C8G     ;                    ;
+; Top-level entity name                                            ; single_buffer_top  ; Max_10_Buffer      ;
+; Family name                                                      ; MAX 10             ; Cyclone V          ;
+; Use smart compilation                                            ; On                 ; Off                ;
+; Maximum processors allowed for parallel compilation              ; All                ;                    ;
+; Restructure Multiplexers                                         ; Off                ; Auto               ;
+; State Machine Processing                                         ; One-Hot            ; Auto               ;
+; Optimization Technique                                           ; Speed              ; Balanced           ;
+; Perform WYSIWYG Primitive Resynthesis                            ; On                 ; Off                ;
+; Enable parallel Assembler and Timing Analyzer during compilation ; On                 ; On                 ;
+; Enable compact report table                                      ; Off                ; Off                ;
+; Create Debugging Nodes for IP Cores                              ; Off                ; Off                ;
+; Preserve fewer node names                                        ; On                 ; On                 ;
+; Intel FPGA IP Evaluation Mode                                    ; Enable             ; Enable             ;
+; Verilog Version                                                  ; Verilog_2001       ; Verilog_2001       ;
+; VHDL Version                                                     ; VHDL_1993          ; VHDL_1993          ;
+; Safe State Machine                                               ; Off                ; Off                ;
+; Extract Verilog State Machines                                   ; On                 ; On                 ;
+; Extract VHDL State Machines                                      ; On                 ; On                 ;
+; Ignore Verilog initial constructs                                ; Off                ; Off                ;
+; Iteration limit for constant Verilog loops                       ; 5000               ; 5000               ;
+; Iteration limit for non-constant Verilog loops                   ; 250                ; 250                ;
+; Add Pass-Through Logic to Inferred RAMs                          ; On                 ; On                 ;
+; Infer RAMs from Raw Logic                                        ; On                 ; On                 ;
+; Parallel Synthesis                                               ; On                 ; On                 ;
+; DSP Block Balancing                                              ; Auto               ; Auto               ;
+; NOT Gate Push-Back                                               ; On                 ; On                 ;
+; Power-Up Don't Care                                              ; On                 ; On                 ;
+; Remove Redundant Logic Cells                                     ; Off                ; Off                ;
+; Remove Duplicate Registers                                       ; On                 ; On                 ;
+; Ignore CARRY Buffers                                             ; Off                ; Off                ;
+; Ignore CASCADE Buffers                                           ; Off                ; Off                ;
+; Ignore GLOBAL Buffers                                            ; Off                ; Off                ;
+; Ignore ROW GLOBAL Buffers                                        ; Off                ; Off                ;
+; Ignore LCELL Buffers                                             ; Off                ; Off                ;
+; Ignore SOFT Buffers                                              ; On                 ; On                 ;
+; Limit AHDL Integers to 32 Bits                                   ; Off                ; Off                ;
+; Carry Chain Length                                               ; 70                 ; 70                 ;
+; Auto Carry Chains                                                ; On                 ; On                 ;
+; Auto Open-Drain Pins                                             ; On                 ; On                 ;
+; Auto ROM Replacement                                             ; On                 ; On                 ;
+; Auto RAM Replacement                                             ; On                 ; On                 ;
+; Auto DSP Block Replacement                                       ; On                 ; On                 ;
+; Auto Shift Register Replacement                                  ; Auto               ; Auto               ;
+; Allow Shift Register Merging across Hierarchies                  ; Auto               ; Auto               ;
+; Auto Clock Enable Replacement                                    ; On                 ; On                 ;
+; Strict RAM Replacement                                           ; Off                ; Off                ;
+; Allow Synchronous Control Signals                                ; On                 ; On                 ;
+; Force Use of Synchronous Clear Signals                           ; Off                ; Off                ;
+; Auto RAM Block Balancing                                         ; On                 ; On                 ;
+; Auto RAM to Logic Cell Conversion                                ; Off                ; Off                ;
+; Auto Resource Sharing                                            ; Off                ; Off                ;
+; Allow Any RAM Size For Recognition                               ; Off                ; Off                ;
+; Allow Any ROM Size For Recognition                               ; Off                ; Off                ;
+; Allow Any Shift Register Size For Recognition                    ; Off                ; Off                ;
+; Use LogicLock Constraints during Resource Balancing              ; On                 ; On                 ;
+; Ignore translate_off and synthesis_off directives                ; Off                ; Off                ;
+; Timing-Driven Synthesis                                          ; On                 ; On                 ;
+; Report Parameter Settings                                        ; On                 ; On                 ;
+; Report Source Assignments                                        ; On                 ; On                 ;
+; Report Connectivity Checks                                       ; On                 ; On                 ;
+; Ignore Maximum Fan-Out Assignments                               ; Off                ; Off                ;
+; Synchronization Register Chain Length                            ; 2                  ; 2                  ;
+; Power Optimization During Synthesis                              ; Normal compilation ; Normal compilation ;
+; HDL message level                                                ; Level2             ; Level2             ;
+; Suppress Register Optimization Related Messages                  ; Off                ; Off                ;
+; Number of Removed Registers Reported in Synthesis Report         ; 5000               ; 5000               ;
+; Number of Swept Nodes Reported in Synthesis Report               ; 5000               ; 5000               ;
+; Number of Inverted Registers Reported in Synthesis Report        ; 100                ; 100                ;
+; Clock MUX Protection                                             ; On                 ; On                 ;
+; Auto Gated Clock Conversion                                      ; Off                ; Off                ;
+; Block Design Naming                                              ; Auto               ; Auto               ;
+; SDC constraint protection                                        ; Off                ; Off                ;
+; Synthesis Effort                                                 ; Auto               ; Auto               ;
+; Shift Register Replacement - Allow Asynchronous Clear Signal     ; On                 ; On                 ;
+; Pre-Mapping Resynthesis Optimization                             ; Off                ; Off                ;
+; Analysis & Synthesis Message Level                               ; Medium             ; Medium             ;
+; Disable Register Merging Across Hierarchies                      ; Auto               ; Auto               ;
+; Resource Aware Inference For Block RAM                           ; On                 ; On                 ;
++------------------------------------------------------------------+--------------------+--------------------+
+
+
++------------------------------------------+
+; Parallel Compilation                     ;
++----------------------------+-------------+
+; Processors                 ; Number      ;
++----------------------------+-------------+
+; Number detected on machine ; 4           ;
+; Maximum allowed            ; 2           ;
+;                            ;             ;
+; Average used               ; 1.00        ;
+; Maximum used               ; 2           ;
+;                            ;             ;
+; Usage by Processor         ; % Time Used ;
+;     Processor 1            ; 100.0%      ;
+;     Processor 2            ;   0.0%      ;
++----------------------------+-------------+
+
+
++-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+; Analysis & Synthesis Source Files Read                                                                                                                                                                    ;
++----------------------------------+-----------------+------------------------+-------------------------------------------------------------------------------------------------------------------+---------+
+; File Name with User-Entered Path ; Used in Netlist ; File Type              ; File Name with Absolute Path                                                                                      ; Library ;
++----------------------------------+-----------------+------------------------+-------------------------------------------------------------------------------------------------------------------+---------+
+; clock_dividers.v                 ; yes             ; User Verilog HDL File  ; C:/Users/James Williams/Google Drive/Northwestern/Research - Mikhelson/Projects/Max 10 Buffer/clock_dividers.v    ;         ;
+; vsync_filter.v                   ; yes             ; User Verilog HDL File  ; C:/Users/James Williams/Google Drive/Northwestern/Research - Mikhelson/Projects/Max 10 Buffer/vsync_filter.v      ;         ;
+; spi_slave.vhd                    ; yes             ; User VHDL File         ; C:/Users/James Williams/Google Drive/Northwestern/Research - Mikhelson/Projects/Max 10 Buffer/spi_slave.vhd       ;         ;
+; spi_controller.v                 ; yes             ; User Verilog HDL File  ; C:/Users/James Williams/Google Drive/Northwestern/Research - Mikhelson/Projects/Max 10 Buffer/spi_controller.v    ;         ;
+; single_mux.v                     ; yes             ; User Verilog HDL File  ; C:/Users/James Williams/Google Drive/Northwestern/Research - Mikhelson/Projects/Max 10 Buffer/single_mux.v        ;         ;
+; single_buffer_top.v              ; yes             ; User Verilog HDL File  ; C:/Users/James Williams/Google Drive/Northwestern/Research - Mikhelson/Projects/Max 10 Buffer/single_buffer_top.v ;         ;
+; pixel_capture.v                  ; yes             ; User Verilog HDL File  ; C:/Users/James Williams/Google Drive/Northwestern/Research - Mikhelson/Projects/Max 10 Buffer/pixel_capture.v     ;         ;
+; single_controller.v              ; yes             ; User Verilog HDL File  ; C:/Users/James Williams/Google Drive/Northwestern/Research - Mikhelson/Projects/Max 10 Buffer/single_controller.v ;         ;
+; pixel_writer.v                   ; yes             ; User Verilog HDL File  ; C:/Users/James Williams/Google Drive/Northwestern/Research - Mikhelson/Projects/Max 10 Buffer/pixel_writer.v      ;         ;
+; sram_controller.v                ; yes             ; User Verilog HDL File  ; C:/Users/James Williams/Google Drive/Northwestern/Research - Mikhelson/Projects/Max 10 Buffer/sram_controller.v   ;         ;
+; mux_and_sram.v                   ; yes             ; User Verilog HDL File  ; C:/Users/James Williams/Google Drive/Northwestern/Research - Mikhelson/Projects/Max 10 Buffer/mux_and_sram.v      ;         ;
+; pixel_input.v                    ; yes             ; User Verilog HDL File  ; C:/Users/James Williams/Google Drive/Northwestern/Research - Mikhelson/Projects/Max 10 Buffer/pixel_input.v       ;         ;
+; pixel_output.v                   ; yes             ; User Verilog HDL File  ; C:/Users/James Williams/Google Drive/Northwestern/Research - Mikhelson/Projects/Max 10 Buffer/pixel_output.v      ;         ;
++----------------------------------+-----------------+------------------------+-------------------------------------------------------------------------------------------------------------------+---------+
+
+
++------------------------------------------------------------+
+; Analysis & Synthesis Resource Usage Summary                ;
++---------------------------------------------+--------------+
+; Resource                                    ; Usage        ;
++---------------------------------------------+--------------+
+; Estimated Total logic elements              ; 364          ;
+;                                             ;              ;
+; Total combinational functions               ; 247          ;
+; Logic element usage by number of LUT inputs ;              ;
+;     -- 4 input functions                    ; 109          ;
+;     -- 3 input functions                    ; 84           ;
+;     -- <=2 input functions                  ; 54           ;
+;                                             ;              ;
+; Logic elements by mode                      ;              ;
+;     -- normal mode                          ; 218          ;
+;     -- arithmetic mode                      ; 29           ;
+;                                             ;              ;
+; Total registers                             ; 242          ;
+;     -- Dedicated logic registers            ; 242          ;
+;     -- I/O registers                        ; 0            ;
+;                                             ;              ;
+; I/O pins                                    ; 57           ;
+;                                             ;              ;
+; Embedded Multiplier 9-bit elements          ; 0            ;
+;                                             ;              ;
+; Maximum fan-out node                        ; clk_in~input ;
+; Maximum fan-out                             ; 217          ;
+; Total fan-out                               ; 1841         ;
+; Average fan-out                             ; 2.97         ;
++---------------------------------------------+--------------+
+
+
++--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+; Analysis & Synthesis Resource Utilization by Entity                                                                                                                                                                                                                                  ;
++---------------------------------+---------------------+---------------------------+-------------+------------+--------------+---------+-----------+------+--------------+------------+------------------------------------------------------------+-------------------+--------------+
+; Compilation Hierarchy Node      ; Combinational ALUTs ; Dedicated Logic Registers ; Memory Bits ; UFM Blocks ; DSP Elements ; DSP 9x9 ; DSP 18x18 ; Pins ; Virtual Pins ; ADC blocks ; Full Hierarchy Name                                        ; Entity Name       ; Library Name ;
++---------------------------------+---------------------+---------------------------+-------------+------------+--------------+---------+-----------+------+--------------+------------+------------------------------------------------------------+-------------------+--------------+
+; |single_buffer_top              ; 247 (0)             ; 242 (0)                   ; 0           ; 0          ; 0            ; 0       ; 0         ; 57   ; 0            ; 0          ; |single_buffer_top                                         ; single_buffer_top ; work         ;
+;    |divide_4:d4|                ; 2 (2)               ; 2 (2)                     ; 0           ; 0          ; 0            ; 0       ; 0         ; 0    ; 0            ; 0          ; |single_buffer_top|divide_4:d4                             ; divide_4          ; work         ;
+;    |mux_and_sram:ms|            ; 28 (0)              ; 53 (0)                    ; 0           ; 0          ; 0            ; 0       ; 0         ; 0    ; 0            ; 0          ; |single_buffer_top|mux_and_sram:ms                         ; mux_and_sram      ; work         ;
+;       |single_mux:mux|          ; 24 (24)             ; 0 (0)                     ; 0           ; 0          ; 0            ; 0       ; 0         ; 0    ; 0            ; 0          ; |single_buffer_top|mux_and_sram:ms|single_mux:mux          ; single_mux        ; work         ;
+;       |sram_ctrl:sram|          ; 4 (4)               ; 53 (53)                   ; 0           ; 0          ; 0            ; 0       ; 0         ; 0    ; 0            ; 0          ; |single_buffer_top|mux_and_sram:ms|sram_ctrl:sram          ; sram_ctrl         ; work         ;
+;    |pixel_input:pi|             ; 57 (0)              ; 94 (0)                    ; 0           ; 0          ; 0            ; 0       ; 0         ; 0    ; 0            ; 0          ; |single_buffer_top|pixel_input:pi                          ; pixel_input       ; work         ;
+;       |pixel_capture:pc|        ; 21 (21)             ; 26 (26)                   ; 0           ; 0          ; 0            ; 0       ; 0         ; 0    ; 0            ; 0          ; |single_buffer_top|pixel_input:pi|pixel_capture:pc         ; pixel_capture     ; work         ;
+;       |pixel_writer:pw|         ; 36 (36)             ; 68 (68)                   ; 0           ; 0          ; 0            ; 0       ; 0         ; 0    ; 0            ; 0          ; |single_buffer_top|pixel_input:pi|pixel_writer:pw          ; pixel_writer      ; work         ;
+;    |pixel_output:po|            ; 155 (0)             ; 88 (0)                    ; 0           ; 0          ; 0            ; 0       ; 0         ; 0    ; 0            ; 0          ; |single_buffer_top|pixel_output:po                         ; pixel_output      ; work         ;
+;       |spi_controller:spi_ctrl| ; 125 (125)           ; 44 (44)                   ; 0           ; 0          ; 0            ; 0       ; 0         ; 0    ; 0            ; 0          ; |single_buffer_top|pixel_output:po|spi_controller:spi_ctrl ; spi_controller    ; work         ;
+;       |spi_slave:spi_sl|        ; 30 (30)             ; 44 (44)                   ; 0           ; 0          ; 0            ; 0       ; 0         ; 0    ; 0            ; 0          ; |single_buffer_top|pixel_output:po|spi_slave:spi_sl        ; spi_slave         ; work         ;
+;    |single_ctrl:s_ctrl|         ; 1 (1)               ; 1 (1)                     ; 0           ; 0          ; 0            ; 0       ; 0         ; 0    ; 0            ; 0          ; |single_buffer_top|single_ctrl:s_ctrl                      ; single_ctrl       ; work         ;
+;    |vsync_filter:vf|            ; 4 (4)               ; 4 (4)                     ; 0           ; 0          ; 0            ; 0       ; 0         ; 0    ; 0            ; 0          ; |single_buffer_top|vsync_filter:vf                         ; vsync_filter      ; work         ;
++---------------------------------+---------------------+---------------------------+-------------+------------+--------------+---------+-----------+------+--------------+------------+------------------------------------------------------------+-------------------+--------------+
+Note: For table entries with two numbers listed, the numbers in parentheses indicate the number of resources of the given type used by the specific entity alone. The numbers listed outside of parentheses indicate the total resources of the given type used by the specific entity and all of its sub-entities in the hierarchy.
+
+
+Encoding Type:  One-Hot
++---------------------------------------------------------------------------------------------------------------------------+
+; State Machine - |single_buffer_top|pixel_output:po|spi_controller:spi_ctrl|state                                          ;
++------------------------+------------------------+----------------+-----------------------+----------------+---------------+
+; Name                   ; state.send_second_byte ; state.wren_ack ; state.send_first_byte ; state.get_word ; state.cleanup ;
++------------------------+------------------------+----------------+-----------------------+----------------+---------------+
+; state.get_word         ; 0                      ; 0              ; 0                     ; 0              ; 0             ;
+; state.send_first_byte  ; 0                      ; 0              ; 1                     ; 1              ; 0             ;
+; state.wren_ack         ; 0                      ; 1              ; 0                     ; 1              ; 0             ;
+; state.send_second_byte ; 1                      ; 0              ; 0                     ; 1              ; 0             ;
+; state.cleanup          ; 0                      ; 0              ; 0                     ; 1              ; 1             ;
++------------------------+------------------------+----------------+-----------------------+----------------+---------------+
+
+
+Encoding Type:  One-Hot
++-------------------------------------------------------------------------------------------------------+
+; State Machine - |single_buffer_top|pixel_output:po|spi_controller:spi_ctrl|global_state               ;
++--------------------------+--------------------------+------------------------+------------------------+
+; Name                     ; global_state.global_idle ; global_state.send_data ; global_state.send_size ;
++--------------------------+--------------------------+------------------------+------------------------+
+; global_state.global_idle ; 0                        ; 0                      ; 0                      ;
+; global_state.send_size   ; 1                        ; 0                      ; 1                      ;
+; global_state.send_data   ; 1                        ; 1                      ; 0                      ;
++--------------------------+--------------------------+------------------------+------------------------+
+
+
+Encoding Type:  One-Hot
++------------------------------------------------------------------------------------------------------------------------------------------+
+; State Machine - |single_buffer_top|pixel_input:pi|pixel_writer:pw|global_state                                                           ;
++-----------------------------------+-----------------------------------+----------------------------------+-------------------------------+
+; Name                              ; global_state.state_wait_frame_end ; global_state.state_frame_capture ; global_state.state_wait_frame ;
++-----------------------------------+-----------------------------------+----------------------------------+-------------------------------+
+; global_state.state_wait_frame_end ; 0                                 ; 0                                ; 0                             ;
+; global_state.state_wait_frame     ; 1                                 ; 0                                ; 1                             ;
+; global_state.state_frame_capture  ; 1                                 ; 1                                ; 0                             ;
++-----------------------------------+-----------------------------------+----------------------------------+-------------------------------+
+
+
+Encoding Type:  One-Hot
++------------------------------------------------------------------------------------------------------------------------------------+
+; State Machine - |single_buffer_top|pixel_input:pi|pixel_writer:pw|state                                                            ;
++----------------------------+-----------------------+-------------------------+----------------------------+------------------------+
+; Name                       ; state.state_end_write ; state.state_wait_second ; state.state_wait_first_end ; state.state_wait_first ;
++----------------------------+-----------------------+-------------------------+----------------------------+------------------------+
+; state.state_wait_first     ; 0                     ; 0                       ; 0                          ; 0                      ;
+; state.state_wait_first_end ; 0                     ; 0                       ; 1                          ; 1                      ;
+; state.state_wait_second    ; 0                     ; 1                       ; 0                          ; 1                      ;
+; state.state_end_write      ; 1                     ; 0                       ; 0                          ; 1                      ;
++----------------------------+-----------------------+-------------------------+----------------------------+------------------------+
+
+
+Encoding Type:  One-Hot
++--------------------------------------------------------------------------+
+; State Machine - |single_buffer_top|pixel_input:pi|pixel_capture:pc|state ;
++------------------+-------------------------------------------------------+
+; Name             ; state.state_wait                                      ;
++------------------+-------------------------------------------------------+
+; state.state_idle ; 0                                                     ;
+; state.state_wait ; 1                                                     ;
++------------------+-------------------------------------------------------+
+
+
+Encoding Type:  One-Hot
++---------------------------------------------------------------------------------------------+
+; State Machine - |single_buffer_top|mux_and_sram:ms|sram_ctrl:sram|state_reg                 ;
++-----------------------+----------------------+-----------------------+----------------------+
+; Name                  ; state_reg.state_idle ; state_reg.state_write ; state_reg.state_read ;
++-----------------------+----------------------+-----------------------+----------------------+
+; state_reg.state_idle  ; 0                    ; 0                     ; 0                    ;
+; state_reg.state_read  ; 1                    ; 0                     ; 1                    ;
+; state_reg.state_write ; 1                    ; 1                     ; 0                    ;
++-----------------------+----------------------+-----------------------+----------------------+
+
+
+Encoding Type:  One-Hot
++-------------------------------------------------------------------------------------------------------------------------+
+; State Machine - |single_buffer_top|vsync_filter:vf|vsync_state                                                          ;
++-------------------------------+------------------------------+-------------------------------+--------------------------+
+; Name                          ; vsync_state.state_first_wait ; vsync_state.state_second_wait ; vsync_state.state_switch ;
++-------------------------------+------------------------------+-------------------------------+--------------------------+
+; vsync_state.state_first_wait  ; 0                            ; 0                             ; 0                        ;
+; vsync_state.state_switch      ; 1                            ; 0                             ; 1                        ;
+; vsync_state.state_second_wait ; 1                            ; 1                             ; 0                        ;
++-------------------------------+------------------------------+-------------------------------+--------------------------+
+
+
++-----------------------------------------------------------------------------------------------------------+
+; Registers Removed During Synthesis                                                                        ;
++------------------------------------------------------------------+----------------------------------------+
+; Register name                                                    ; Reason for Removal                     ;
++------------------------------------------------------------------+----------------------------------------+
+; pixel_input:pi|pixel_writer:pw|sram_addr[15]                     ; Stuck at GND due to stuck port data_in ;
+; pixel_input:pi|pixel_writer:pw|stop_addr[15]                     ; Stuck at GND due to stuck port data_in ;
+; vsync_filter:vf|vsync_count[0,1]                                 ; Stuck at GND due to stuck port data_in ;
+; mux_and_sram:ms|sram_ctrl:sram|state_reg.state_write             ; Lost fanout                            ;
+; pixel_output:po|spi_controller:spi_ctrl|state~4                  ; Lost fanout                            ;
+; pixel_output:po|spi_controller:spi_ctrl|state~5                  ; Lost fanout                            ;
+; pixel_input:pi|pixel_writer:pw|state~8                           ; Lost fanout                            ;
+; pixel_input:pi|pixel_writer:pw|state~9                           ; Lost fanout                            ;
+; pixel_input:pi|pixel_writer:pw|state~10                          ; Lost fanout                            ;
+; pixel_input:pi|pixel_capture:pc|state~7                          ; Lost fanout                            ;
+; mux_and_sram:ms|sram_ctrl:sram|state_reg~6                       ; Lost fanout                            ;
+; pixel_input:pi|pixel_writer:pw|global_state.state_wait_frame_end ; Lost fanout                            ;
+; pixel_input:pi|pixel_capture:pc|addr_out[16]                     ; Lost fanout                            ;
+; Total Number of Removed Registers = 14                           ;                                        ;
++------------------------------------------------------------------+----------------------------------------+
+
+
++-------------------------------------------------------------------------------------------------------------------------+
+; Removed Registers Triggering Further Register Optimizations                                                             ;
++----------------------------------------------+---------------------------+----------------------------------------------+
+; Register name                                ; Reason for Removal        ; Registers Removed due to This Register       ;
++----------------------------------------------+---------------------------+----------------------------------------------+
+; pixel_input:pi|pixel_writer:pw|sram_addr[15] ; Stuck at GND              ; pixel_input:pi|pixel_writer:pw|stop_addr[15] ;
+;                                              ; due to stuck port data_in ;                                              ;
++----------------------------------------------+---------------------------+----------------------------------------------+
+
+
++------------------------------------------------------+
+; General Register Statistics                          ;
++----------------------------------------------+-------+
+; Statistic                                    ; Value ;
++----------------------------------------------+-------+
+; Total registers                              ; 242   ;
+; Number of registers using Synchronous Clear  ; 17    ;
+; Number of registers using Synchronous Load   ; 21    ;
+; Number of registers using Asynchronous Clear ; 200   ;
+; Number of registers using Asynchronous Load  ; 0     ;
+; Number of registers using Clock Enable       ; 178   ;
+; Number of registers using Preset             ; 0     ;
++----------------------------------------------+-------+
+
+
++--------------------------------------------------------------+
+; Inverted Register Statistics                                 ;
++----------------------------------------------------+---------+
+; Inverted Register                                  ; Fan out ;
++----------------------------------------------------+---------+
+; mux_and_sram:ms|sram_ctrl:sram|we_reg              ; 1       ;
+; mux_and_sram:ms|sram_ctrl:sram|oe_reg              ; 1       ;
+; pixel_output:po|spi_slave:spi_sl|preload_miso      ; 1       ;
+; pixel_input:pi|pixel_writer:pw|sram_start          ; 4       ;
+; pixel_output:po|spi_controller:spi_ctrl|sram_start ; 5       ;
+; mux_and_sram:ms|sram_ctrl:sram|tri_reg             ; 16      ;
+; Total number of inverted registers = 6             ;         ;
++----------------------------------------------------+---------+
+
+
++---------------------------------------------------------------------------------------------------+
+; Physical Synthesis Netlist Optimizations                                                          ;
++----------------------------------------------------------+------------------+---------------------+
+; Node                                                     ; Action           ; Reason              ;
++----------------------------------------------------------+------------------+---------------------+
+; pixel_input:pi|pixel_writer:pw|Equal0~0_NEW_REG4_OTERM9  ; Retimed Register ; Timing optimization ;
+; pixel_input:pi|pixel_writer:pw|Equal0~0_OTERM5           ; Retimed Register ; Timing optimization ;
+; pixel_input:pi|pixel_writer:pw|Equal0~1_NEW_REG2_OTERM11 ; Retimed Register ; Timing optimization ;
+; pixel_input:pi|pixel_writer:pw|Equal0~1_OTERM3           ; Retimed Register ; Timing optimization ;
+; pixel_input:pi|pixel_writer:pw|Equal0~2_NEW_REG0_OTERM13 ; Retimed Register ; Timing optimization ;
+; pixel_input:pi|pixel_writer:pw|Equal0~2_OTERM1           ; Retimed Register ; Timing optimization ;
+; pixel_input:pi|pixel_writer:pw|Equal0~3_OTERM15          ; Retimed Register ; Timing optimization ;
+; pixel_input:pi|pixel_writer:pw|sram_data[0]_OTERM7       ; Retimed Register ; Timing optimization ;
+; pixel_input:pi|pixel_writer:pw|sram_data[1]_OTERM21      ; Retimed Register ; Timing optimization ;
+; pixel_input:pi|pixel_writer:pw|sram_data[2]_OTERM19      ; Retimed Register ; Timing optimization ;
+; pixel_input:pi|pixel_writer:pw|sram_data[5]_OTERM17      ; Retimed Register ; Timing optimization ;
+; pixel_output:po|spi_controller:spi_ctrl|Add0~0           ; Modified         ; Timing optimization ;
+; pixel_output:po|spi_controller:spi_ctrl|sram_addr_next~0 ; Modified         ; Timing optimization ;
+; pixel_output:po|spi_controller:spi_ctrl|wren_next~0      ; Deleted          ; Timing optimization ;
+; pixel_output:po|spi_controller:spi_ctrl|wren~0           ; Modified         ; Timing optimization ;
+; pixel_output:po|spi_slave:spi_sl|tx_bit_next~0           ; Deleted          ; Timing optimization ;
+; pixel_output:po|spi_slave:spi_sl|tx_bit_reg~0            ; Modified         ; Timing optimization ;
++----------------------------------------------------------+------------------+---------------------+
+
+
++------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+; Multiplexer Restructuring Statistics (No Restructuring Performed)                                                                                                                        ;
++--------------------+-----------+---------------+----------------------+------------------------+------------+----------------------------------------------------------------------------+
+; Multiplexer Inputs ; Bus Width ; Baseline Area ; Area if Restructured ; Saving if Restructured ; Registered ; Example Multiplexer Output                                                 ;
++--------------------+-----------+---------------+----------------------+------------------------+------------+----------------------------------------------------------------------------+
+; 5:1                ; 8 bits    ; 24 LEs        ; 8 LEs                ; 16 LEs                 ; Yes        ; |single_buffer_top|pixel_output:po|spi_controller:spi_ctrl|next_pixel[6]   ;
+; 6:1                ; 2 bits    ; 8 LEs         ; 2 LEs                ; 6 LEs                  ; Yes        ; |single_buffer_top|pixel_output:po|spi_controller:spi_ctrl|size_count[0]   ;
+; 7:1                ; 16 bits   ; 64 LEs        ; 16 LEs               ; 48 LEs                 ; Yes        ; |single_buffer_top|pixel_output:po|spi_controller:spi_ctrl|sram_addr[6]    ;
+; 13:1               ; 7 bits    ; 56 LEs        ; 21 LEs               ; 35 LEs                 ; Yes        ; |single_buffer_top|pixel_output:po|spi_controller:spi_ctrl|spi_data_out[1] ;
+; 3:1                ; 2 bits    ; 4 LEs         ; 2 LEs                ; 2 LEs                  ; No         ; |single_buffer_top|mux_and_sram:ms|sram_ctrl:sram|state_next.state_write   ;
+; 4:1                ; 7 bits    ; 14 LEs        ; 14 LEs               ; 0 LEs                  ; No         ; |single_buffer_top|pixel_output:po|spi_slave:spi_sl|Selector4              ;
+; 6:1                ; 2 bits    ; 8 LEs         ; 6 LEs                ; 2 LEs                  ; No         ; |single_buffer_top|pixel_output:po|spi_controller:spi_ctrl|Selector41      ;
+; 5:1                ; 3 bits    ; 9 LEs         ; 6 LEs                ; 3 LEs                  ; No         ; |single_buffer_top|pixel_input:pi|pixel_writer:pw|Selector8                ;
+; 9:1                ; 4 bits    ; 24 LEs        ; 12 LEs               ; 12 LEs                 ; No         ; |single_buffer_top|pixel_input:pi|pixel_writer:pw|state                    ;
+; 13:1               ; 2 bits    ; 16 LEs        ; 10 LEs               ; 6 LEs                  ; No         ; |single_buffer_top|pixel_output:po|spi_controller:spi_ctrl|Selector35      ;
++--------------------+-----------+---------------+----------------------+------------------------+------------+----------------------------------------------------------------------------+
+
+
++--------------------------------------------------------------+
+; Parameter Settings for User Entity Instance: vsync_filter:vf ;
++----------------+-------+-------------------------------------+
+; Parameter Name ; Value ; Type                                ;
++----------------+-------+-------------------------------------+
+; wait_cycles    ; 0     ; Signed Integer                      ;
+; VSYNC_ACTIVE   ; 0     ; Unsigned Binary                     ;
++----------------+-------+-------------------------------------+
+Note: In order to hide this table in the UI and the text report file, please set the "Show Parameter Settings in Synthesis Report" option in "Analysis and Synthesis Settings -> More Settings" to "Off".
+
+
++-----------------------------------------------------------------+
+; Parameter Settings for User Entity Instance: single_ctrl:s_ctrl ;
++----------------+-------+----------------------------------------+
+; Parameter Name ; Value ; Type                                   ;
++----------------+-------+----------------------------------------+
+; VSYNC_ACTIVE   ; 0     ; Unsigned Binary                        ;
++----------------+-------+----------------------------------------+
+Note: In order to hide this table in the UI and the text report file, please set the "Show Parameter Settings in Synthesis Report" option in "Analysis and Synthesis Settings -> More Settings" to "Off".
+
+
++-------------------------------------------------------------+
+; Parameter Settings for User Entity Instance: pixel_input:pi ;
++----------------+-------+------------------------------------+
+; Parameter Name ; Value ; Type                               ;
++----------------+-------+------------------------------------+
+; VSYNC_ACTIVE   ; 0     ; Unsigned Binary                    ;
++----------------+-------+------------------------------------+
+Note: In order to hide this table in the UI and the text report file, please set the "Show Parameter Settings in Synthesis Report" option in "Analysis and Synthesis Settings -> More Settings" to "Off".
+
+
++------------------------------------------------------------------------------+
+; Parameter Settings for User Entity Instance: pixel_input:pi|pixel_capture:pc ;
++----------------+-------+-----------------------------------------------------+
+; Parameter Name ; Value ; Type                                                ;
++----------------+-------+-----------------------------------------------------+
+; VSYNC_ACTIVE   ; 0     ; Unsigned Binary                                     ;
++----------------+-------+-----------------------------------------------------+
+Note: In order to hide this table in the UI and the text report file, please set the "Show Parameter Settings in Synthesis Report" option in "Analysis and Synthesis Settings -> More Settings" to "Off".
+
+
++-----------------------------------------------------------------------------+
+; Parameter Settings for User Entity Instance: pixel_input:pi|pixel_writer:pw ;
++----------------+-------+----------------------------------------------------+
+; Parameter Name ; Value ; Type                                               ;
++----------------+-------+----------------------------------------------------+
+; VSYNC_ACTIVE   ; 0     ; Unsigned Binary                                    ;
++----------------+-------+----------------------------------------------------+
+Note: In order to hide this table in the UI and the text report file, please set the "Show Parameter Settings in Synthesis Report" option in "Analysis and Synthesis Settings -> More Settings" to "Off".
+
+
++-------------------------------------------------------------------------------+
+; Parameter Settings for User Entity Instance: pixel_output:po|spi_slave:spi_sl ;
++----------------+-------+------------------------------------------------------+
+; Parameter Name ; Value ; Type                                                 ;
++----------------+-------+------------------------------------------------------+
+; N              ; 8     ; Signed Integer                                       ;
+; CPOL           ; '0'   ; Enumerated                                           ;
+; CPHA           ; '0'   ; Enumerated                                           ;
+; PREFETCH       ; 3     ; Signed Integer                                       ;
++----------------+-------+------------------------------------------------------+
+Note: In order to hide this table in the UI and the text report file, please set the "Show Parameter Settings in Synthesis Report" option in "Analysis and Synthesis Settings -> More Settings" to "Off".
+
+
++----------------------------------------------------------------------------------------------------------------------------------------------+
+; Port Connectivity Checks: "pixel_output:po|spi_slave:spi_sl"                                                                                 ;
++---------------+--------+----------+----------------------------------------------------------------------------------------------------------+
+; Port          ; Type   ; Severity ; Details                                                                                                  ;
++---------------+--------+----------+----------------------------------------------------------------------------------------------------------+
+; do_transfer_o ; Output ; Warning  ; Declared by entity but not connected by instance. Logic that only feeds a dangling port will be removed. ;
+; wren_o        ; Output ; Warning  ; Declared by entity but not connected by instance. Logic that only feeds a dangling port will be removed. ;
+; rx_bit_next_o ; Output ; Warning  ; Declared by entity but not connected by instance. Logic that only feeds a dangling port will be removed. ;
+; state_dbg_o   ; Output ; Warning  ; Declared by entity but not connected by instance. Logic that only feeds a dangling port will be removed. ;
+; sh_reg_dbg_o  ; Output ; Warning  ; Declared by entity but not connected by instance. Logic that only feeds a dangling port will be removed. ;
++---------------+--------+----------+----------------------------------------------------------------------------------------------------------+
+
+
++---------------------------------------------+
+; Port Connectivity Checks: "mux_and_sram:ms" ;
++--------+-------+----------+-----------------+
+; Port   ; Type  ; Severity ; Details         ;
++--------+-------+----------+-----------------+
+; data_b ; Input ; Info     ; Stuck at GND    ;
++--------+-------+----------+-----------------+
+
+
++-----------------------------------------------------+
+; Post-Synthesis Netlist Statistics for Top Partition ;
++-----------------------+-----------------------------+
+; Type                  ; Count                       ;
++-----------------------+-----------------------------+
+; boundary_port         ; 57                          ;
+; cycloneiii_ff         ; 242                         ;
+;     CLR               ; 37                          ;
+;     CLR SLD           ; 2                           ;
+;     ENA               ; 17                          ;
+;     ENA CLR           ; 143                         ;
+;     ENA CLR SCLR SLD  ; 16                          ;
+;     ENA CLR SLD       ; 2                           ;
+;     SCLR              ; 1                           ;
+;     SLD               ; 1                           ;
+;     plain             ; 23                          ;
+; cycloneiii_io_obuf    ; 16                          ;
+; cycloneiii_lcell_comb ; 250                         ;
+;     arith             ; 29                          ;
+;         2 data inputs ; 28                          ;
+;         3 data inputs ; 1                           ;
+;     normal            ; 221                         ;
+;         0 data inputs ; 1                           ;
+;         1 data inputs ; 4                           ;
+;         2 data inputs ; 24                          ;
+;         3 data inputs ; 83                          ;
+;         4 data inputs ; 109                         ;
+;                       ;                             ;
+; Max LUT depth         ; 4.00                        ;
+; Average LUT depth     ; 2.00                        ;
++-----------------------+-----------------------------+
+
+
++-------------------------------+
+; Elapsed Time Per Partition    ;
++----------------+--------------+
+; Partition Name ; Elapsed Time ;
++----------------+--------------+
+; Top            ; 00:00:03     ;
++----------------+--------------+
+
+
++-------------------------------+
+; Analysis & Synthesis Messages ;
++-------------------------------+
+Info: *******************************************************************
+Info: Running Quartus Prime Analysis & Synthesis
+    Info: Version 18.1.0 Build 625 09/12/2018 SJ Lite Edition
+    Info: Processing started: Sat Dec 29 13:31:49 2018
+Info: Command: quartus_map --read_settings_files=on --write_settings_files=off Max_10_Buffer -c Max_10_Buffer
+Info (16303): High Performance Effort optimization mode selected -- timing performance will be prioritized at the potential cost of increased compilation time
+Info (20030): Parallel compilation is enabled and will use 2 of the 2 processors detected
+Info (12021): Found 2 design units, including 2 entities, in source file clock_dividers.v
+    Info (12023): Found entity 1: divide_2 File: C:/Users/James Williams/Google Drive/Northwestern/Research - Mikhelson/Projects/Max 10 Buffer/clock_dividers.v Line: 18
+    Info (12023): Found entity 2: divide_4 File: C:/Users/James Williams/Google Drive/Northwestern/Research - Mikhelson/Projects/Max 10 Buffer/clock_dividers.v Line: 37
+Info (12021): Found 1 design units, including 1 entities, in source file vsync_filter.v
+    Info (12023): Found entity 1: vsync_filter File: C:/Users/James Williams/Google Drive/Northwestern/Research - Mikhelson/Projects/Max 10 Buffer/vsync_filter.v Line: 4
+Info (12021): Found 2 design units, including 1 entities, in source file spi_slave.vhd
+    Info (12022): Found design unit 1: spi_slave-rtl File: C:/Users/James Williams/Google Drive/Northwestern/Research - Mikhelson/Projects/Max 10 Buffer/spi_slave.vhd Line: 182
+    Info (12023): Found entity 1: spi_slave File: C:/Users/James Williams/Google Drive/Northwestern/Research - Mikhelson/Projects/Max 10 Buffer/spi_slave.vhd Line: 143
+Info (12021): Found 1 design units, including 1 entities, in source file spi_controller.v
+    Info (12023): Found entity 1: spi_controller File: C:/Users/James Williams/Google Drive/Northwestern/Research - Mikhelson/Projects/Max 10 Buffer/spi_controller.v Line: 3
+Info (12021): Found 1 design units, including 1 entities, in source file single_mux.v
+    Info (12023): Found entity 1: single_mux File: C:/Users/James Williams/Google Drive/Northwestern/Research - Mikhelson/Projects/Max 10 Buffer/single_mux.v Line: 3
+Info (12021): Found 1 design units, including 1 entities, in source file single_buffer_top.v
+    Info (12023): Found entity 1: single_buffer_top File: C:/Users/James Williams/Google Drive/Northwestern/Research - Mikhelson/Projects/Max 10 Buffer/single_buffer_top.v Line: 4
+Info (12021): Found 1 design units, including 1 entities, in source file pixel_capture.v
+    Info (12023): Found entity 1: pixel_capture File: C:/Users/James Williams/Google Drive/Northwestern/Research - Mikhelson/Projects/Max 10 Buffer/pixel_capture.v Line: 3
+Info (12021): Found 1 design units, including 1 entities, in source file single_controller.v
+    Info (12023): Found entity 1: single_ctrl File: C:/Users/James Williams/Google Drive/Northwestern/Research - Mikhelson/Projects/Max 10 Buffer/single_controller.v Line: 3
+Info (12021): Found 1 design units, including 1 entities, in source file pixel_writer.v
+    Info (12023): Found entity 1: pixel_writer File: C:/Users/James Williams/Google Drive/Northwestern/Research - Mikhelson/Projects/Max 10 Buffer/pixel_writer.v Line: 6
+Info (12021): Found 1 design units, including 1 entities, in source file sram_controller.v
+    Info (12023): Found entity 1: sram_ctrl File: C:/Users/James Williams/Google Drive/Northwestern/Research - Mikhelson/Projects/Max 10 Buffer/sram_controller.v Line: 25
+Info (12021): Found 1 design units, including 1 entities, in source file pll120_100.v
+    Info (12023): Found entity 1: pll120_100 File: C:/Users/James Williams/Google Drive/Northwestern/Research - Mikhelson/Projects/Max 10 Buffer/pll120_100.v Line: 39
+Info (12021): Found 1 design units, including 1 entities, in source file pll120_60.v
+    Info (12023): Found entity 1: pll120_60 File: C:/Users/James Williams/Google Drive/Northwestern/Research - Mikhelson/Projects/Max 10 Buffer/pll120_60.v Line: 39
+Info (12021): Found 1 design units, including 1 entities, in source file mux_and_sram.v
+    Info (12023): Found entity 1: mux_and_sram File: C:/Users/James Williams/Google Drive/Northwestern/Research - Mikhelson/Projects/Max 10 Buffer/mux_and_sram.v Line: 3
+Info (12021): Found 1 design units, including 1 entities, in source file pixel_input.v
+    Info (12023): Found entity 1: pixel_input File: C:/Users/James Williams/Google Drive/Northwestern/Research - Mikhelson/Projects/Max 10 Buffer/pixel_input.v Line: 3
+Info (12021): Found 1 design units, including 1 entities, in source file pixel_output.v
+    Info (12023): Found entity 1: pixel_output File: C:/Users/James Williams/Google Drive/Northwestern/Research - Mikhelson/Projects/Max 10 Buffer/pixel_output.v Line: 3
+Info (12021): Found 1 design units, including 1 entities, in source file pll120_30.v
+    Info (12023): Found entity 1: pll120_30 File: C:/Users/James Williams/Google Drive/Northwestern/Research - Mikhelson/Projects/Max 10 Buffer/pll120_30.v Line: 39
+Info (12021): Found 1 design units, including 1 entities, in source file pixel_input_tb.v
+    Info (12023): Found entity 1: pixel_input_tb File: C:/Users/James Williams/Google Drive/Northwestern/Research - Mikhelson/Projects/Max 10 Buffer/pixel_input_tb.v Line: 5
+Info (12021): Found 1 design units, including 1 entities, in source file mux_and_sram_tb.v
+    Info (12023): Found entity 1: mux_and_sram_tb File: C:/Users/James Williams/Google Drive/Northwestern/Research - Mikhelson/Projects/Max 10 Buffer/mux_and_sram_tb.v Line: 3
+Info (12021): Found 1 design units, including 1 entities, in source file pixel_output_tb.v
+    Info (12023): Found entity 1: pixel_output_tb File: C:/Users/James Williams/Google Drive/Northwestern/Research - Mikhelson/Projects/Max 10 Buffer/pixel_output_tb.v Line: 4
+Info (12127): Elaborating entity "single_buffer_top" for the top level hierarchy
+Info (12128): Elaborating entity "vsync_filter" for hierarchy "vsync_filter:vf" File: C:/Users/James Williams/Google Drive/Northwestern/Research - Mikhelson/Projects/Max 10 Buffer/single_buffer_top.v Line: 53
+Info (12128): Elaborating entity "single_ctrl" for hierarchy "single_ctrl:s_ctrl" File: C:/Users/James Williams/Google Drive/Northwestern/Research - Mikhelson/Projects/Max 10 Buffer/single_buffer_top.v Line: 73
+Info (12128): Elaborating entity "mux_and_sram" for hierarchy "mux_and_sram:ms" File: C:/Users/James Williams/Google Drive/Northwestern/Research - Mikhelson/Projects/Max 10 Buffer/single_buffer_top.v Line: 129
+Info (12128): Elaborating entity "sram_ctrl" for hierarchy "mux_and_sram:ms|sram_ctrl:sram" File: C:/Users/James Williams/Google Drive/Northwestern/Research - Mikhelson/Projects/Max 10 Buffer/mux_and_sram.v Line: 64
+Info (12128): Elaborating entity "single_mux" for hierarchy "mux_and_sram:ms|single_mux:mux" File: C:/Users/James Williams/Google Drive/Northwestern/Research - Mikhelson/Projects/Max 10 Buffer/mux_and_sram.v Line: 111
+Info (12128): Elaborating entity "pixel_input" for hierarchy "pixel_input:pi" File: C:/Users/James Williams/Google Drive/Northwestern/Research - Mikhelson/Projects/Max 10 Buffer/single_buffer_top.v Line: 162
+Info (12128): Elaborating entity "pixel_capture" for hierarchy "pixel_input:pi|pixel_capture:pc" File: C:/Users/James Williams/Google Drive/Northwestern/Research - Mikhelson/Projects/Max 10 Buffer/pixel_input.v Line: 48
+Info (12128): Elaborating entity "pixel_writer" for hierarchy "pixel_input:pi|pixel_writer:pw" File: C:/Users/James Williams/Google Drive/Northwestern/Research - Mikhelson/Projects/Max 10 Buffer/pixel_input.v Line: 70
+Info (12128): Elaborating entity "pixel_output" for hierarchy "pixel_output:po" File: C:/Users/James Williams/Google Drive/Northwestern/Research - Mikhelson/Projects/Max 10 Buffer/single_buffer_top.v Line: 189
+Info (12128): Elaborating entity "spi_controller" for hierarchy "pixel_output:po|spi_controller:spi_ctrl" File: C:/Users/James Williams/Google Drive/Northwestern/Research - Mikhelson/Projects/Max 10 Buffer/pixel_output.v Line: 57
+Info (10264): Verilog HDL Case Statement information at spi_controller.v(108): all case item expressions in this case statement are onehot File: C:/Users/James Williams/Google Drive/Northwestern/Research - Mikhelson/Projects/Max 10 Buffer/spi_controller.v Line: 108
+Info (10264): Verilog HDL Case Statement information at spi_controller.v(180): all case item expressions in this case statement are onehot File: C:/Users/James Williams/Google Drive/Northwestern/Research - Mikhelson/Projects/Max 10 Buffer/spi_controller.v Line: 180
+Info (12128): Elaborating entity "spi_slave" for hierarchy "pixel_output:po|spi_slave:spi_sl" File: C:/Users/James Williams/Google Drive/Northwestern/Research - Mikhelson/Projects/Max 10 Buffer/pixel_output.v Line: 75
+Info (12128): Elaborating entity "divide_4" for hierarchy "divide_4:d4" File: C:/Users/James Williams/Google Drive/Northwestern/Research - Mikhelson/Projects/Max 10 Buffer/single_buffer_top.v Line: 206
+Warning (12241): 1 hierarchies have connectivity warnings - see the Connectivity Checks report folder
+Info (17026): Resynthesizing 0 WYSIWYG logic cells and I/Os using "speed" technology mapper which leaves 0 WYSIWYG logic cells and I/Os untouched
+Info (13000): Registers with preset signals will power-up high File: C:/Users/James Williams/Google Drive/Northwestern/Research - Mikhelson/Projects/Max 10 Buffer/sram_controller.v Line: 67
+Info (13003): DEV_CLRn pin will set, and not reset, register with preset signal due to NOT Gate Push-Back
+Warning (13024): Output pins are stuck at VCC or GND
+    Warning (13410): Pin "sram_ce_a_n" is stuck at GND File: C:/Users/James Williams/Google Drive/Northwestern/Research - Mikhelson/Projects/Max 10 Buffer/single_buffer_top.v Line: 21
+    Warning (13410): Pin "sram_ub_a_n" is stuck at GND File: C:/Users/James Williams/Google Drive/Northwestern/Research - Mikhelson/Projects/Max 10 Buffer/single_buffer_top.v Line: 22
+    Warning (13410): Pin "sram_lb_a_n" is stuck at GND File: C:/Users/James Williams/Google Drive/Northwestern/Research - Mikhelson/Projects/Max 10 Buffer/single_buffer_top.v Line: 23
+Info (286030): Timing-Driven Synthesis is running
+Info (17049): 10 registers lost all their fanouts during netlist optimizations.
+Info (128000): Starting physical synthesis optimizations for speed
+Info (332104): Reading SDC File: 'timing.sdc'
+Info (332151): Clock uncertainty is not calculated until you update the timing netlist.
+Info (332123): Deriving Clock Uncertainty. Please refer to report_sdc in the Timing Analyzer to see clock uncertainties.
+Info (332129): Detected timing requirements -- optimizing circuit to achieve only the specified requirements
+Info (332111): Found 2 clocks
+    Info (332111):   Period   Clock Name
+    Info (332111): ======== ============
+    Info (332111):    8.333       clk_in
+    Info (332111):   50.000      spi_clk
+Info (128002): Starting physical synthesis algorithm register retiming
+Info (128003): Physical synthesis algorithm register retiming complete: estimated slack improvement of 257 ps
+Info (128002): Starting physical synthesis algorithm combinational resynthesis using boolean division
+Info (128003): Physical synthesis algorithm combinational resynthesis using boolean division complete: estimated slack improvement of 0 ps
+Info (128001): Physical synthesis optimizations for speed complete: elapsed time is 00:00:01
+Info (144001): Generated suppressed messages file C:/Users/James Williams/Google Drive/Northwestern/Research - Mikhelson/Projects/Max 10 Buffer/output_files/Max_10_Buffer.map.smsg
+Info (16010): Generating hard_block partition "hard_block:auto_generated_inst"
+    Info (16011): Adding 0 node(s), including 0 DDIO, 0 PLL, 0 transceiver and 0 LCELL
+Info (21057): Implemented 436 device resources after synthesis - the final resource count might be different
+    Info (21058): Implemented 16 input pins
+    Info (21059): Implemented 25 output pins
+    Info (21060): Implemented 16 bidirectional pins
+    Info (21061): Implemented 379 logic cells
+Info: Quartus Prime Analysis & Synthesis was successful. 0 errors, 5 warnings
+    Info: Peak virtual memory: 4848 megabytes
+    Info: Processing ended: Sat Dec 29 13:32:13 2018
+    Info: Elapsed time: 00:00:24
+    Info: Total CPU time (on all processors): 00:00:40
+
+
++------------------------------------------+
+; Analysis & Synthesis Suppressed Messages ;
++------------------------------------------+
+The suppressed messages can be found in C:/Users/James Williams/Google Drive/Northwestern/Research - Mikhelson/Projects/Max 10 Buffer/output_files/Max_10_Buffer.map.smsg.
+
+

@@ -43,7 +43,7 @@ assign sram_data = select ? data_b : data_a;
 
 //Assign for outputs to A and B modules
 
-assign data_out_b = select ? sram_data_out : 16'bz;
+assign data_out_b = select ? sram_data_out : 16'b0;
 assign ready_a = select ? 1'b0 : sram_ready;
 assign ready_b = select ? sram_ready : 1'b0;
 
